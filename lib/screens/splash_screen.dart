@@ -1,8 +1,8 @@
 import 'package:edu_vista/utils/images_utility.dart';
 import 'package:flutter/material.dart';
 
-class SplashScree extends StatelessWidget {
-  const SplashScree({super.key});
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

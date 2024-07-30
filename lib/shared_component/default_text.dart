@@ -1,0 +1,19 @@
+import 'package:edu_vista/utils/color_utility.dart';
+import 'package:flutter/material.dart';
+
+Widget textInApp({
+  required String text,
+  required double fontSize,
+  Color color = ColorUtility.black,
+  FontWeight fontWeight = FontWeight.w700,
+}) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: color,
+      fontWeight: fontWeight,
+      fontSize: fontSize,
+    ),
+    textAlign: TextAlign.center,
+  );
+}
