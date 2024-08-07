@@ -1,3 +1,5 @@
+import 'package:edu_vista/screens/login_screen.dart';
+import 'package:edu_vista/services/pref_service.dart';
 import 'package:edu_vista/shared_component/default_button.dart';
 import 'package:edu_vista/shared_component/default_text.dart';
 import 'package:edu_vista/shared_component/onboarding/onboarding_arrow_icon.dart';
@@ -86,8 +88,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     alignment: Alignment.bottomCenter,
                     child: Padding(
                         padding: const EdgeInsets.only(bottom: 60),
-                        child:
-                            defaultButton(text: "Let's Start", onTap: () {})),
+                        child: defaultButton(
+                            text: "Let's Start",
+                            onTap: () {
+                              onLogin();
+                            })),
                   )
                 : Align(
                     alignment: Alignment.bottomCenter,
@@ -136,5 +141,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
       ),
     );
+  }
+
+  void onLogin() {
+    PreferencesService.isOnBoardingSeen = true;
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ));
   }
 }
