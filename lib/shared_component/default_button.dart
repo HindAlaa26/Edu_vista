@@ -12,5 +12,9 @@ Widget defaultButton({
       color: ColorUtility.secondary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       onPressed: onTap,
-      child: textInApp(text: text, fontSize: 18, color: Colors.white));
+      child: textInApp(
+          text: text,
+          fontSize: 18,
+          color: Colors.white,
+          fontWeight: FontWeight.w700));
 }

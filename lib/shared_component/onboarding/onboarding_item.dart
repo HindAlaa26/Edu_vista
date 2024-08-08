@@ -14,7 +14,9 @@ Widget onBoardingItem({
       ),
     ),
     const SizedBox(height: 30),
-    textInApp(text: title, fontSize: 20, fontWeight: FontWeight.w700),
+    textInApp(
+      text: title,
+    ),
     const SizedBox(height: 20),
     Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),

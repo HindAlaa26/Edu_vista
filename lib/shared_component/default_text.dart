@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 Widget textInApp({
   required String text,
-  required double fontSize,
+  double fontSize = 20,
   Color color = ColorUtility.black,
   FontWeight fontWeight = FontWeight.w700,
 }) {

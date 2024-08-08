@@ -1,4 +1,4 @@
-import 'package:edu_vista/screens/login_screen.dart';
+import 'package:edu_vista/screens/auth_screens/login_screen.dart';
 import 'package:edu_vista/services/pref_service.dart';
 import 'package:edu_vista/shared_component/default_button.dart';
 import 'package:edu_vista/shared_component/default_text.dart';
