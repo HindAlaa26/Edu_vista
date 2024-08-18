@@ -5,17 +5,27 @@ import 'package:edu_vista/shared_component/default_text.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 
-class AuthTemplate extends StatelessWidget {
-  final void Function()? onLogin;
-  final void Function()? onSignUp;
+import '../../screens/auth_screens/reset_password_screen.dart';
+
+class AuthTemplate extends StatefulWidget {
+  final Future<void> Function()? onLogin;
+  final Future<void> Function()? onSignUp;
   final Widget body;
   AuthTemplate({this.onLogin, this.onSignUp, required this.body, super.key}) {
     assert(onLogin != null || onSignUp != null,
         'onLogin or onSignUp should not be null');
   }
-  bool get isLogin => onLogin != null;
+
+  @override
+  State<AuthTemplate> createState() => _AuthTemplateState();
+}
+
+class _AuthTemplateState extends State<AuthTemplate> {
+  bool get isLogin => widget.onLogin != null;
 
   String get title => isLogin ? "Login" : "Sign Up";
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,24 +37,54 @@ class AuthTemplate extends StatelessWidget {
           children: [
             textInApp(text: title, fontSize: 20),
             const SizedBox(height: 40),
-            body,
+            widget.body,
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                textInApp(
-                    text: "Forget Password?",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: ColorUtility.secondary),
-              ],
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ResetPasswordScreen(),
+                    ));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  textInApp(
+                      text: "Forget Password?",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: ColorUtility.secondary),
+                ],
+              ),
             ),
             const SizedBox(height: 50),
-            defaultButton(
-              text: isLogin ? "LOGIN" : "Sign Up",
-              onTap: isLogin ? onLogin! : onSignUp!,
-            ),
-            //or sign in with
+            isLoading
+                ? const CircularProgressIndicator(
+                    color: ColorUtility.main,
+                  )
+                : defaultButton(
+                    text: isLogin ? "LOGIN" : "Sign Up",
+                    onTap: () async {
+                      if (isLogin) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        await widget.onLogin?.call();
+                        setState(() {
+                          isLoading = false;
+                        });
+                      } else {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        await widget.onSignUp?.call();
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    },
+                  ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

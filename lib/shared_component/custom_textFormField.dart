@@ -15,6 +15,7 @@ class DefaultTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.onSaved,
     this.isPassword = false,
+    this.enabled = true,
   });
   final TextEditingController controller;
   final String validatorText;
@@ -25,6 +26,7 @@ class DefaultTextFormField extends StatelessWidget {
   final String label;
   final String hintText;
   final bool isPassword;
+  final bool enabled;
   InputBorder get textFieldBorder => OutlineInputBorder(
       borderRadius: BorderRadius.circular(5),
       borderSide: const BorderSide(color: ColorUtility.grey));
@@ -50,6 +52,7 @@ class DefaultTextFormField extends StatelessWidget {
             onFieldSubmitted: onSaved,
             inputFormatters: inputFormatters,
             obscureText: isPassword,
+            enabled: enabled,
             validator: (value) {
               if (value!.isEmpty) {
                 return '$validatorText must not be empty';
