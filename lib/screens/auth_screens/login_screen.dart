@@ -1,9 +1,10 @@
 import 'package:edu_vista/cubit/auth_cubit.dart';
-import 'package:edu_vista/screens/home_screen.dart';
 import 'package:edu_vista/shared_component/auth/auth_template.dart';
 import 'package:edu_vista/shared_component/custom_textFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../layout_screens/home_layout_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -37,18 +38,17 @@ class _LoginScreenState extends State<LoginScreen> {
         child: AuthTemplate(
           onLogin: () async {
             if (formKey.currentState?.validate() ?? false) {
-             var result = await context.read<AuthCubit>().login(
+              var result = await context.read<AuthCubit>().login(
                   context: context,
                   emailController: emailController,
                   passwordController: passwordController);
-             if(result)
-               {
-                 Navigator.pushReplacement(
-                     context,
-                     MaterialPageRoute(
-                       builder: (context) => const HomeScreen(),
-                     ));
-               }
+              if (result) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeLayoutScreen(),
+                    ));
+              }
             }
           },
           body: Form(
