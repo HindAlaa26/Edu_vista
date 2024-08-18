@@ -1,5 +1,6 @@
 import 'package:edu_vista/shared_component/default_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget onBoardingItem({
   required String imagePath,
@@ -13,14 +14,14 @@ Widget onBoardingItem({
         imagePath,
       ),
     ),
-    const SizedBox(height: 30),
+    SizedBox(height: 30.h),
     textInApp(
       text: title,
     ),
-    const SizedBox(height: 20),
+    SizedBox(height: 20.h),
     Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
+        padding: EdgeInsets.symmetric(horizontal: 40.w),
         child: textInApp(
-            text: subTitle, fontSize: 16, fontWeight: FontWeight.w300)),
+            text: subTitle, fontSize: 16.sp, fontWeight: FontWeight.w300)),
   ]);
 }

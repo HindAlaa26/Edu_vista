@@ -4,6 +4,7 @@ import 'package:edu_vista/services/pref_service.dart';
 import 'package:edu_vista/utils/images_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_loadingkit/flutter_animated_loadingkit.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -27,8 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(ImageUtility.logo),
-            const SizedBox(
-              height: 100,
+            SizedBox(
+              height: 100.h,
             ),
             const AnimatedLoadingSpiralLines(
               color: Colors.blueGrey,

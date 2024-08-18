@@ -1,12 +1,15 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
 import 'package:edu_vista/screens/splash_screen.dart';
 import 'package:edu_vista/services/pref_service.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,10 +21,15 @@ void main() async {
   } catch (e) {
     print('Failed to initialize Firebase: $e');
   }
-  runApp(MultiBlocProvider(
-    providers: [BlocProvider(create: (ctx) => AuthCubit())],
-    child: const MyApp(),
-  ));
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => MultiBlocProvider(
+        providers: [BlocProvider(create: (ctx) => AuthCubit())],
+        child: const MyApp(),
+      ), // Wrap your app
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,18 +37,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Edu Vista',
-      scrollBehavior: CustomScrollBehaviour(),
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: "PlusJakartaSans",
-        colorScheme: ColorScheme.fromSeed(seedColor: ColorUtility.main),
-        scaffoldBackgroundColor: ColorUtility.scaffoldBackground,
-        useMaterial3: true,
-      ),
-      home: const SplashScreen(),
-    );
+    return ScreenUtilInit(
+        designSize: Size(
+          MediaQuery.of(context).size.width,
+          MediaQuery.of(context).size.height,
+        ),
+        builder: (context, child) {
+          return MaterialApp(
+            title: 'Edu Vista',
+            scrollBehavior: CustomScrollBehaviour(),
+            useInheritedMediaQuery: true,
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: "PlusJakartaSans",
+              colorScheme: ColorScheme.fromSeed(seedColor: ColorUtility.main),
+              scaffoldBackgroundColor: ColorUtility.scaffoldBackground,
+              useMaterial3: true,
+            ),
+            home: const SplashScreen(),
+          );
+        });
   }
 }
 

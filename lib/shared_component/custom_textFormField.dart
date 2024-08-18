@@ -2,6 +2,7 @@ import 'package:edu_vista/shared_component/default_text.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DefaultTextFormField extends StatelessWidget {
   const DefaultTextFormField({
@@ -41,11 +42,11 @@ class DefaultTextFormField extends StatelessWidget {
             padding: const EdgeInsets.only(left: 10),
             child: textInApp(
               text: label,
-              fontSize: 13,
+              fontSize: 13.sp,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: controller,
@@ -59,7 +60,7 @@ class DefaultTextFormField extends StatelessWidget {
               }
               return null;
             },
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500),
             cursorColor: ColorUtility.grey,
             keyboardType: keyboardType,
             textInputAction: textInputAction,

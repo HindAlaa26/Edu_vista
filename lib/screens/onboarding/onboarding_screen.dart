@@ -7,6 +7,7 @@ import 'package:edu_vista/shared_component/onboarding/onboarding_item.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:edu_vista/utils/images_utility.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   OnBoardingScreen({super.key});
@@ -77,7 +78,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   },
                   child: textInApp(
                       text: "Skip",
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xff3A3A3A)),
                 ),
@@ -104,20 +105,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             children: List.generate(
                                 4,
                                 (index) => Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 5, vertical: 10),
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 5.w, vertical: 10.h),
                                       decoration: BoxDecoration(
                                           color: currentPage == index
                                               ? ColorUtility.secondary
                                               : const Color(0xff3A3A3A),
                                           borderRadius:
                                               BorderRadius.circular(128)),
-                                      height: 7,
-                                      width: 42,
+                                      height: 7.h,
+                                      width: 42.w,
                                     ))),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 30, horizontal: 19),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 30.h, horizontal: 19.w),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

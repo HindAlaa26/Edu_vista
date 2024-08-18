@@ -4,6 +4,7 @@ import 'package:edu_vista/shared_component/default_button.dart';
 import 'package:edu_vista/shared_component/default_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../shared_component/custom_textFormField.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -53,13 +54,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 37),
+          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 37.w),
           child: Form(
             key: formKey,
             child: Column(
               children: [
                 textInApp(text: "Reset Password"),
-                const SizedBox(height: 40),
+                SizedBox(height: 40.h),
                 Expanded(
                   child: PageView(
                     controller: pageController,
@@ -97,9 +98,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 50),
+                SizedBox(height: 50.h),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 50),
+                  padding: EdgeInsets.symmetric(vertical: 50.h),
                   child: defaultButton(
                     text: "SUBMIT",
                     onTap: () async {
