@@ -1,4 +1,5 @@
 import 'package:edu_vista/cubit/auth_cubit.dart';
+import 'package:edu_vista/screens/auth_screens/login_screen.dart';
 import 'package:edu_vista/shared_component/auth/auth_template.dart';
 import 'package:edu_vista/shared_component/custom_textFormField.dart';
 import 'package:flutter/material.dart';
@@ -45,11 +46,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: AuthTemplate(
           onSignUp: () async {
             if (formKey.currentState?.validate() ?? false) {
-              await context.read<AuthCubit>().signUp(
+              var result = await context.read<AuthCubit>().signUp(
                   context: context,
                   emailController: emailController,
                   nameController: fullNameController,
                   passwordController: passwordController);
+              if (result) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
+                    ));
+              }
             }
           },
           body: Form(

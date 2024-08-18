@@ -1,4 +1,3 @@
-import 'package:edu_vista/screens/auth_screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
@@ -7,7 +6,7 @@ import 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
-  Future<void> login({
+  Future<bool> login({
     required BuildContext context,
     required TextEditingController emailController,
     required TextEditingController passwordController,
@@ -20,9 +19,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (credentials.user != null) {
         emit(LoginSuccess());
+        return true;
       }
     } on FirebaseAuthException catch (e) {
-      if (!context.mounted) return;
+      if (!context.mounted) return false;
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -49,7 +49,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
       }
     } catch (e) {
-      if (!context.mounted) return;
+      if (!context.mounted) return false;
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -57,9 +57,10 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     }
+    return false;
   }
 
-  Future<void> signUp({
+  Future<bool> signUp({
     required BuildContext context,
     required TextEditingController nameController,
     required TextEditingController emailController,
@@ -74,16 +75,16 @@ class AuthCubit extends Cubit<AuthState> {
       if (credentials.user != null) {
         credentials.user!.updateDisplayName(nameController.text);
 
-        if (!context.mounted) return;
-
+        if (!context.mounted) return false;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Account created successfully'),
           ),
         );
+        return true;
       }
     } on FirebaseAuthException catch (e) {
-      if (!context.mounted) return;
+      if (!context.mounted) return false;
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -98,13 +99,14 @@ class AuthCubit extends Cubit<AuthState> {
         );
       }
     } catch (e) {
-      if (!context.mounted) return;
+      if (!context.mounted) return false;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Sign up Exception $e'),
         ),
       );
     }
+    return false;
   }
 
   Future<bool> sendPasswordResetEmail({
