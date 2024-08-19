@@ -1,11 +1,11 @@
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/screens/auth_screens/login_screen.dart';
-import 'package:edu_vista/shared_component/default_button.dart';
-import 'package:edu_vista/shared_component/default_text.dart';
+import 'package:edu_vista/shared_component/default_button_component .dart';
+import 'package:edu_vista/shared_component/default_text_component .dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../shared_component/custom_textFormField.dart';
+import '../../shared_component/custom_textFormField_component .dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});

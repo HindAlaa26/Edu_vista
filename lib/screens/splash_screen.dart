@@ -1,7 +1,9 @@
 import 'package:edu_vista/screens/auth_screens/login_screen.dart';
+import 'package:edu_vista/screens/layout_screens/home_layout_screen.dart';
 import 'package:edu_vista/screens/onboarding/onboarding_screen.dart';
 import 'package:edu_vista/services/pref_service.dart';
 import 'package:edu_vista/utils/images_utility.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_loadingkit/flutter_animated_loadingkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,11 +47,19 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
     if (mounted) {
       if (PreferencesService.isOnBoardingSeen) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginScreen(),
-            ));
+        if (FirebaseAuth.instance.currentUser != null) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeLayoutScreen(),
+              ));
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginScreen(),
+              ));
+        }
       } else {
         Navigator.pushReplacement(
             context,

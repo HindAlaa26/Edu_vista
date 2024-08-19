@@ -1,13 +1,14 @@
 import 'package:edu_vista/screens/auth_screens/login_screen.dart';
 import 'package:edu_vista/services/pref_service.dart';
-import 'package:edu_vista/shared_component/default_button.dart';
-import 'package:edu_vista/shared_component/default_text.dart';
-import 'package:edu_vista/shared_component/onboarding/onboarding_arrow_icon.dart';
-import 'package:edu_vista/shared_component/onboarding/onboarding_item.dart';
+import 'package:edu_vista/shared_component/default_button_component .dart';
+import 'package:edu_vista/shared_component/default_text_component .dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:edu_vista/utils/images_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../shared_component/onboarding_components/onboarding_arrow_icon_component.dart';
+import '../../shared_component/onboarding_components/onboarding_item_component.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   OnBoardingScreen({super.key});

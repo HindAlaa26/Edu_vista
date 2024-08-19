@@ -1,9 +1,10 @@
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/screens/auth_screens/login_screen.dart';
-import 'package:edu_vista/shared_component/auth/auth_template.dart';
-import 'package:edu_vista/shared_component/custom_textFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../shared_component/auth_components/auth_template_component.dart';
+import '../../shared_component/custom_textFormField_component .dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
