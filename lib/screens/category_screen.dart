@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/utils/color_utility.dart';
+import 'package:expansion_tile_list/expansion_tile_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/category_model.dart';
+import '../models/course_model.dart';
+import '../shared_component/course_component.dart';
 import '../shared_component/default_text_component .dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -15,6 +18,7 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   var futureCall = FirebaseFirestore.instance.collection('categories').get();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,18 +70,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
               separatorBuilder: (context, index) => SizedBox(
                 width: 10.w,
               ),
-              itemBuilder: (context, index) => Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: const Color(0xffE0E0E0),
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                child: Center(
-                  child: textInApp(
-                      text: categories[index].name ?? 'No Name',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500),
-                ),
+              itemBuilder: (context, index) => ExpansionTileList(
+                trailing: const Icon((Icons.double_arrow)),
+                children: [
+                  ExpansionTile(
+                    title: Text('${categories[index].name}'),
+                    children: [textInApp(text: "Soon....")],
+                  ),
+                ],
               ),
             );
           }),

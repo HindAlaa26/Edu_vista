@@ -105,6 +105,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  expansion_tile_list:
+    dependency: "direct main"
+    description:
+      name: expansion_tile_list
+      sha256: f899e62d3e1d440bc03bd4b9dd05b89ada8d0c53b8e2c9631288cce5dc74f953
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   fake_async:
     dependency: transitive
     description:

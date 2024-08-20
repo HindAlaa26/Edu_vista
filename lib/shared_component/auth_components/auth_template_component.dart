@@ -118,41 +118,50 @@ class _AuthTemplateState extends State<AuthTemplate> {
             Row(
               children: [
                 // sign in with Facebook
-                Container(
-                  padding: const EdgeInsets.only(
-                      left: 11, top: 15, right: 11, bottom: 15),
-                  decoration: BoxDecoration(
-                      color: const Color(0xff1877F2),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.facebook,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      textInApp(
-                          text: "Sign In with Facebook",
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)
-                    ],
+                Expanded(
+                  flex: 10,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        left: 11, top: 15, right: 11, bottom: 15),
+                    decoration: BoxDecoration(
+                        color: const Color(0xff1877F2),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      children: [
+                        const Expanded(
+                          child: Icon(
+                            Icons.facebook,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: textInApp(
+                              text: "Sign In with Facebook",
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(width: 10.w),
+                SizedBox(
+                  width: 5.w,
+                ),
                 // sign in with Google
-                Container(
-                  height: 60.h,
-                  width: 80.w,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: ColorUtility.grey),
-                      borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/images/google.png"),
-                          fit: BoxFit.fill)),
+                Expanded(
+                  child: Container(
+                    height: 60.h,
+                    width: 80.w,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: ColorUtility.grey),
+                        borderRadius: BorderRadius.circular(10),
+                        image: const DecorationImage(
+                            image: AssetImage("assets/images/google.png"),
+                            fit: BoxFit.fill)),
+                  ),
                 ),
               ],
             ),
@@ -161,27 +170,32 @@ class _AuthTemplateState extends State<AuthTemplate> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                textInApp(
-                    text: isLogin
-                        ? "Don’t have an account?"
-                        : "Already have an account?",
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xff6C6C6C)),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              isLogin ? SignUpScreen() : LoginScreen(),
-                        ));
-                  },
+                Expanded(
+                  flex: 3,
                   child: textInApp(
-                      text: isLogin ? " Sign Up Here" : " Login Here",
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                      color: ColorUtility.secondary),
+                      text: isLogin
+                          ? "Don’t have an account?"
+                          : "Already have an account?",
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff6C6C6C)),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                isLogin ? SignUpScreen() : LoginScreen(),
+                          ));
+                    },
+                    child: textInApp(
+                        text: isLogin ? " Sign Up Here" : " Login Here",
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
+                        color: ColorUtility.secondary),
+                  ),
                 ),
               ],
             )
