@@ -67,7 +67,7 @@ class _CourseWidgetState extends State<CourseWidget> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => LectureScreen(
-                              Course: courses[index],
+                              course: courses[index],
                             ),
                           ));
                     },

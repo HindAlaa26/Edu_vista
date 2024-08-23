@@ -1,14 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../models/course_model.dart';
+import '../shared_component/lecture_component.dart';
+import '../utils/app_enum.dart';
 import '../utils/color_utility.dart';
 import '../shared_component/default_text_component .dart';
 
 class LectureScreen extends StatefulWidget {
-  final Course;
+  final Course course;
 
-  LectureScreen({required this.Course});
+  LectureScreen({required this.course});
 
   @override
   _LectureScreenState createState() => _LectureScreenState();
@@ -17,21 +21,22 @@ class LectureScreen extends StatefulWidget {
 class _LectureScreenState extends State<LectureScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
-  int selectedLectureIndex = 0;
+  final videoUrl = "https://youtu.be/YMx8Bbev6T4?si=reH3n_KYzM6eFznU";
+  late YoutubePlayerController _videoPlayerController;
   @override
   void initState() {
+    final videoID = YoutubePlayer.convertUrlToId(videoUrl);
+    _videoPlayerController = YoutubePlayerController(
+        initialVideoId: videoID!,
+        flags: const YoutubePlayerFlags(autoPlay: false));
     super.initState();
     tabController = TabController(length: 4, vsync: this);
   }
-
-  List<String> lectureTitles = [
-    'Introduction to C++',
-    'First Code',
-    'Pointers',
-    'Arrays',
-    'Structures',
-    'Classes and Objects'
-  ];
+  void dispose() {
+    _videoPlayerController.dispose();
+    tabController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,79 +47,19 @@ class _LectureScreenState extends State<LectureScreen>
               children: [
                 Stack(
                   children: [
-                    Container(
-                      height: 300,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              AssetImage("assets/images/C++LectureImage.png"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    YoutubePlayer(
+                      controller: _videoPlayerController,
+                      showVideoProgressIndicator: true,
                     ),
-                    const Positioned(
-                      top: 70,
-                      left: 0,
-                      right: 0,
-                      child: Icon(
-                        Icons.play_circle_outline,
-                        color: Colors.white,
-                        size: 64,
-                      ),
-                    ),
-                    const Positioned(
+                    Positioned(
                       top: 16,
                       left: 16,
-                      child: Icon(Icons.arrow_back, color: Colors.white),
-                    ),
-                    Positioned(
-                      left: 16,
-                      right: 16,
-                      bottom: 90,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.crop_free,
-                                  color: Colors.white,
-                                  size: 17,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Slider(
-                            value: 0.3,
-                            onChanged: (value) {},
-                            activeColor: Colors.red,
-                            inactiveColor: ColorUtility.grey,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: 16,
-                      right: 16,
-                      bottom: 80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          textInApp(
-                              text: '10:00',
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w400),
-                          textInApp(
-                              text: '30:00',
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w400),
-                        ],
-                      ),
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back,
+                              color: Colors.white)),
                     ),
                   ],
                 ),
@@ -138,12 +83,13 @@ class _LectureScreenState extends State<LectureScreen>
                           Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: textInApp(
-                                  text: 'C++ for Beginners',
+                                  text: widget.course.title ?? "Course Name",
                                   color: const Color(0xff1D1B20))),
                           Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                               child: textInApp(
-                                  text: 'Robert Jackson',
+                                  text: widget.course.instructor?.name ??
+                                      "instructor Name",
                                   color: const Color(0xff1D1B20),
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400)),
@@ -175,10 +121,22 @@ class _LectureScreenState extends State<LectureScreen>
                               controller: tabController,
                               physics: const BouncingScrollPhysics(),
                               children: [
-                                buildLectureTab(),
-                                buildDownloadTab(),
-                                buildCertificateTab(),
-                                buildMoreTab(),
+                                LecturesWidget(
+                                  course: widget.course,
+                                  courseOption: CourseOptions.lecture,
+                                ),
+                                LecturesWidget(
+                                  course: widget.course,
+                                  courseOption: CourseOptions.download,
+                                ),
+                                LecturesWidget(
+                                  course: widget.course,
+                                  courseOption: CourseOptions.certificate,
+                                ),
+                                LecturesWidget(
+                                  course: widget.course,
+                                  courseOption: CourseOptions.more,
+                                ),
                               ],
                             ),
                           ),
@@ -190,195 +148,6 @@ class _LectureScreenState extends State<LectureScreen>
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildLectureTab() {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 1,
-      ),
-      itemCount: lectureTitles.length,
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
-      addAutomaticKeepAlives: true,
-      itemBuilder: (context, index) {
-        return buildLectureItem(
-            title: lectureTitles[index],
-            isActive: index == selectedLectureIndex,
-            subtitle: 'Lorem ipsum dolor sit amet consectetur.',
-            lectureNumber: index + 1,
-            duration: "5 min",
-            onTap: () {
-              setState(() {
-                selectedLectureIndex = index;
-              });
-            });
-      },
-    );
-  }
-
-  Widget buildLectureItem(
-      {required int lectureNumber,
-      required String title,
-      required String subtitle,
-      bool isActive = false,
-      required VoidCallback onTap,
-      required String duration}) {
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        elevation: 3,
-        color: isActive ? ColorUtility.secondary : Colors.grey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        margin: const EdgeInsets.only(bottom: 12),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: textInApp(
-                      text: "Lecture $lectureNumber",
-                      fontSize: 14,
-                      color: isActive ? Colors.white : ColorUtility.black,
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.file_download_outlined,
-                        size: 20,
-                        color: isActive ? Colors.white : ColorUtility.black,
-                      ))
-                ],
-              ),
-              Flexible(
-                child: textInApp(
-                    text: title,
-                    fontSize: 14,
-                    color: isActive ? Colors.white : ColorUtility.black),
-              ),
-              Flexible(
-                child: textInApp(
-                    text: subtitle,
-                    fontSize: 14,
-                    color: isActive ? Colors.white : ColorUtility.black),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: textInApp(
-                        text: "Duration $duration",
-                        fontSize: 10,
-                        color: isActive ? Colors.white : ColorUtility.black),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.play_circle_outline,
-                        size: 40,
-                        color: isActive ? Colors.white : ColorUtility.black,
-                      ))
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildDownloadTab() {
-    return Center(
-      child: textInApp(
-          text: 'Download Section', fontSize: 18, fontWeight: FontWeight.bold),
-    );
-  }
-
-  Widget buildCertificateTab() {
-    return SingleChildScrollView(
-      child: Center(
-        child: Container(
-          width: 300.w,
-          height: 400.h,
-          padding: const EdgeInsets.all(16),
-          margin: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: ColorUtility.grey,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(0, 4),
-                blurRadius: 8,
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              textInApp(
-                  text: "Certificate of Completion",
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
-              SizedBox(height: 16.h),
-              textInApp(text: "This is to certify that", fontSize: 16),
-              SizedBox(height: 8.h),
-              textInApp(
-                  text: FirebaseAuth.instance.currentUser?.displayName ??
-                      "Student Name",
-                  fontSize: 18,
-                  color: ColorUtility.secondary,
-                  fontWeight: FontWeight.bold),
-              SizedBox(height: 16.h),
-              textInApp(
-                  text:
-                      "has successfully completed the course\nC++ for Beginners",
-                  fontSize: 16),
-              SizedBox(height: 24.h),
-              textInApp(text: "Instructor Name", fontSize: 16),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildMoreTab() {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        buildMoreItem('About Instructor'),
-        buildMoreItem('Course Resources'),
-        buildMoreItem('Share this Course'),
-      ],
-    );
-  }
-
-  Widget buildMoreItem(String title) {
-    return Card(
-      color: Colors.grey[100],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      margin: const EdgeInsets.only(bottom: 15),
-      child: ExpansionTile(
-        title:
-            textInApp(text: title, fontSize: 15, fontWeight: FontWeight.w500),
-        trailing: const Icon(Icons.double_arrow),
-        children: [
-          SizedBox(height: 12.h),
-          textInApp(
-              text: 'Come soon...', fontSize: 14, color: Colors.grey.shade600),
         ],
       ),
     );
