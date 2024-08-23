@@ -3,7 +3,7 @@ import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
 import 'package:edu_vista/screens/splash_screen.dart';
 import 'package:edu_vista/services/pref_service.dart';
-import 'package:edu_vista/shared_component/lecture_shared_component.dart';
+import 'package:edu_vista/screens/lecture_screen.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';

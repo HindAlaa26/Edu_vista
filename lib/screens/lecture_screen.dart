@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/color_utility.dart';
-import 'default_text_component .dart';
+import '../shared_component/default_text_component .dart';
 
 class LectureScreen extends StatefulWidget {
+  final Course;
+
+  LectureScreen({required this.Course});
+
   @override
   _LectureScreenState createState() => _LectureScreenState();
 }
