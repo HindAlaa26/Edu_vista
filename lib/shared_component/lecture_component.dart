@@ -1,10 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edu_vista/bloc/lecture_bloc/lecture_event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../bloc/lecture_bloc/lecture_bloc.dart';
+import '../bloc/lecture_bloc/lecture_state.dart';
 import '../models/course_model.dart';
-import '../models/lecture_model.dart';
 import '../utils/app_enum.dart';
 import '../utils/color_utility.dart';
 import 'default_text_component .dart';
@@ -12,109 +14,94 @@ import 'default_text_component .dart';
 class LecturesWidget extends StatefulWidget {
   final CourseOptions courseOption;
   final Course course;
-  // final void Function(Lecture) onLectureChosen;
-  const LecturesWidget(
-      {required this.course,
-      // required this.onLectureChosen,
-      super.key,
-      required this.courseOption});
+  const LecturesWidget({
+    required this.course,
+    super.key,
+    required this.courseOption,
+  });
 
   @override
   State<LecturesWidget> createState() => _LecturesWidgetState();
 }
 
 class _LecturesWidgetState extends State<LecturesWidget> {
-  int selectedLectureIndex = 0;
   @override
   Widget build(BuildContext context) {
-    switch (widget.courseOption) {
-      case CourseOptions.lecture:
-        return FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('courses')
-                .doc(widget.course.id)
-                .collection('lectures')
-                .get(),
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: ColorUtility.secondary,
-                  ),
-                );
-              }
+    return BlocBuilder<LectureBloc, LectureState>(
+      builder: (context, state) {
+        if (widget.courseOption == CourseOptions.lecture) {
+          if (state is LectureLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ColorUtility.secondary,
+              ),
+            );
+          } else if (state is LectureLoadedState) {
+            var lectures = state.lectures;
+            return GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 6,
+                childAspectRatio: 0.7,
+              ),
+              itemCount: lectures.length,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              addAutomaticKeepAlives: true,
+              itemBuilder: (context, index) {
+                return buildLectureItem(
+                    title: lectures[index].title ?? "Lecture title",
+                    isActive: index == state.selectedLectureIndex,
+                    subtitle:
+                        lectures[index].description ?? "Lecture description",
+                    lectureNumber: lectures[index].sort ?? 1,
+                    duration: lectures[index].duration ?? 0,
+                    onTap: () {
+                      context
+                          .read<LectureBloc>()
+                          .add(SelectLectureEvent(lectureIndex: index));
+                    });
+              },
+            );
+          } else if (state is LectureErrorState) {
+            return Center(
+              child: textInApp(text: state.error),
+            );
+          } else {
+            return Center(
+              child: textInApp(text: 'No Lectures found'),
+            );
+          }
+        }
 
-              if (snapshot.hasError) {
-                print('Error: ${snapshot.error}');
+        return buildNonLectureTabs(widget.courseOption, widget.course);
+      },
+    );
+  }
+}
 
-                return Center(
-                  child: textInApp(text: 'Error occurred'),
-                );
-              }
+Widget buildNonLectureTabs(CourseOptions option, Course course) {
+  switch (option) {
+    case CourseOptions.download:
+      return Center(
+        child: textInApp(
+            text: 'Download Section',
+            fontSize: 18,
+            fontWeight: FontWeight.bold),
+      );
 
-              if (!snapshot.hasData || (snapshot.data?.docs.isEmpty ?? false)) {
-                print('No data found or empty lectures list');
-                return Center(
-                  child: textInApp(
-                    text: 'No Lectures found',
-                  ),
-                );
-              }
-              print('Lectures Data: ${snapshot.data?.docs}');
-              var lectures = List<Lecture>.from(snapshot.data?.docs
-                      .map((e) => Lecture.fromJson({'id': e.id, ...e.data()}))
-                      .toList() ??
-                  []);
+    case CourseOptions.certificate:
+      return buildCertificateTab(
+        instructorName: course.instructor?.name ?? "instructor Name",
+        courseTitle: course.title ?? "Course Title",
+      );
 
-              return GridView.builder(
-                padding: const EdgeInsets.all(16),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 1,
-                ),
-                itemCount: lectures.length,
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                addAutomaticKeepAlives: true,
-                itemBuilder: (context, index) {
-                  return buildLectureItem(
-                      title: lectures[index].title ?? "Lecture title",
-                      isActive: index == selectedLectureIndex,
-                      subtitle:
-                          lectures[index].description ?? "Lecture description",
-                      lectureNumber: lectures[index].sort ?? 1,
-                      duration: lectures[index].duration ?? 0,
-                      onTap: () {
-                        setState(() {
-                          selectedLectureIndex = index;
-                        });
-                      });
-                },
-              );
-              ;
-            });
-
-      case CourseOptions.download:
-        return Center(
-          child: textInApp(
-              text: 'Download Section',
-              fontSize: 18,
-              fontWeight: FontWeight.bold),
-        );
-
-      case CourseOptions.certificate:
-        return buildCertificateTab(
-          instructorName: widget.course.instructor?.name ?? "instructor Name",
-          courseTitle: widget.course.title ?? "Course Title",
-        );
-
-      case CourseOptions.more:
-        return buildMoreTab();
-      default:
-        return Text('Invalid option ${widget.courseOption.name}');
-    }
+    case CourseOptions.more:
+      return buildMoreTab();
+    default:
+      return Text('Invalid option ${option.name}');
   }
 }
 
@@ -137,54 +124,60 @@ Widget buildLectureItem(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: textInApp(
-                    text: "Lecture $lectureNumber",
-                    fontSize: 14,
-                    color: isActive ? Colors.white : ColorUtility.black,
-                  ),
-                ),
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.file_download_outlined,
-                      size: 20,
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: textInApp(
+                      text: "Lecture $lectureNumber",
+                      fontSize: 14,
                       color: isActive ? Colors.white : ColorUtility.black,
-                    ))
-              ],
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.file_download_outlined,
+                        size: 20,
+                        color: isActive ? Colors.white : ColorUtility.black,
+                      ))
+                ],
+              ),
             ),
-            Flexible(
+            Expanded(
               child: textInApp(
                   text: title,
                   fontSize: 14,
                   color: isActive ? Colors.white : ColorUtility.black),
             ),
-            Flexible(
-              child: textInApp(
-                  text: subtitle,
-                  fontSize: 14,
-                  color: isActive ? Colors.white : ColorUtility.black),
+            Expanded(
+              child: SingleChildScrollView(
+                child: textInApp(
+                    text: subtitle,
+                    fontSize: 14,
+                    color: isActive ? Colors.white : ColorUtility.black),
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: textInApp(
-                      text: "Duration $duration",
-                      fontSize: 10,
-                      color: isActive ? Colors.white : ColorUtility.black),
-                ),
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.play_circle_outline,
-                      size: 40,
-                      color: isActive ? Colors.white : ColorUtility.black,
-                    ))
-              ],
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: textInApp(
+                        text: "Duration $duration seconds",
+                        fontSize: 10,
+                        color: isActive ? Colors.white : ColorUtility.black),
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.play_circle_outline,
+                        size: 40,
+                        color: isActive ? Colors.white : ColorUtility.black,
+                      ))
+                ],
+              ),
             ),
           ],
         ),

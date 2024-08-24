@@ -26,3 +26,25 @@ final class LoginFailed extends LoginState {
 
   LoginFailed(this.error);
 }
+
+// user State
+final class UserState extends AuthState {}
+
+final class CreateUserSuccessfully extends UserState {}
+
+final class CreateUserFailed extends UserState {
+  final String error;
+
+  CreateUserFailed(this.error);
+}
+
+// logout State
+final class LogoutState extends AuthState {}
+
+final class LogoutSuccess extends LogoutState {}
+
+final class LogoutFailed extends LogoutState {
+  final String error;
+
+  LogoutFailed(this.error);
+}

@@ -3,7 +3,6 @@ import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
 import 'package:edu_vista/screens/splash_screen.dart';
 import 'package:edu_vista/services/pref_service.dart';
-import 'package:edu_vista/screens/lecture_screen.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +10,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'bloc/lecture_bloc/lecture_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +27,12 @@ void main() async {
     DevicePreview(
       enabled: !kReleaseMode,
       builder: (context) => MultiBlocProvider(
-        providers: [BlocProvider(create: (ctx) => AuthCubit())],
+        providers: [
+          BlocProvider(create: (ctx) => AuthCubit()),
+          BlocProvider(create: (ctx) => LectureBloc()),
+        ],
         child: const MyApp(),
-      ), // Wrap your app
+      ),
     ),
   );
 }
@@ -58,7 +62,6 @@ class MyApp extends StatelessWidget {
               useMaterial3: true,
             ),
             home: const SplashScreen(),
-            //LectureScreen()
           );
         });
   }
