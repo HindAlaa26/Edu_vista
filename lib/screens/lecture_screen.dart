@@ -86,7 +86,7 @@ class _LectureScreenState extends State<LectureScreen>
                       ),
                     ),
                     Positioned(
-                      top: 200,
+                      top: 239,
                       left: 0,
                       right: 0,
                       child: Container(
