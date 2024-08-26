@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'bloc/course_bloc/course_bloc.dart';
 import 'bloc/lecture_bloc/lecture_bloc.dart';
 
 void main() async {
@@ -30,6 +31,7 @@ void main() async {
         providers: [
           BlocProvider(create: (ctx) => AuthCubit()),
           BlocProvider(create: (ctx) => LectureBloc()),
+          BlocProvider(create: (ctx) => CourseBloc()),
         ],
         child: const MyApp(),
       ),

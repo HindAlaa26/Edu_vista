@@ -58,7 +58,7 @@ class _LectureScreenState extends State<LectureScreen>
           }
         },
         child: Scaffold(
-          backgroundColor: ColorUtility.black,
+          backgroundColor: Colors.black,
           body: Column(
             children: [
               Expanded(
@@ -78,24 +78,28 @@ class _LectureScreenState extends State<LectureScreen>
                     Positioned(
                       top: 16,
                       left: 16,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon:
+                              const Icon(Icons.arrow_back, color: Colors.white),
+                        ),
                       ),
                     ),
                     Positioned(
-                      top: 239,
-                      left: 0,
-                      right: 0,
+                      top: 239.h,
+                      left: 0.w,
+                      right: 0.w,
                       child: Container(
                         height: ScreenUtil().screenHeight,
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40),
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
                           ),
                         ),
                         child: Column(

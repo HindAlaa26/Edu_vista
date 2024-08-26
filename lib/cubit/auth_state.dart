@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/user_model.dart';
+
 @immutable
 sealed class AuthState {}
 
@@ -32,10 +34,33 @@ final class UserState extends AuthState {}
 
 final class CreateUserSuccessfully extends UserState {}
 
+final class UserLoading extends UserState {}
+
+final class UserLoaded extends UserState {
+  final UserModel user;
+  UserLoaded(this.user);
+}
+
+final class UserError extends UserState {
+  final String message;
+  UserError(this.message);
+}
+
 final class CreateUserFailed extends UserState {
   final String error;
 
   CreateUserFailed(this.error);
+}
+
+class UserUpdating extends AuthState {}
+
+//profile image
+
+class ImageUploading extends AuthState {}
+
+class ImageUploadSuccess extends AuthState {
+  final UserModel user;
+  ImageUploadSuccess(this.user);
 }
 
 // logout State

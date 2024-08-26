@@ -40,25 +40,27 @@ class _AuthTemplateState extends State<AuthTemplate> {
             SizedBox(height: 40.h),
             widget.body,
             SizedBox(height: 10.h),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ResetPasswordScreen(),
-                    ));
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  textInApp(
-                      text: "Forget Password?",
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: ColorUtility.secondary),
-                ],
-              ),
-            ),
+            isLogin
+                ? InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ResetPasswordScreen(),
+                          ));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        textInApp(
+                            text: "Forget Password?",
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: ColorUtility.secondary),
+                      ],
+                    ),
+                  )
+                : const SizedBox(),
             SizedBox(height: 50.h),
             isLoading
                 ? const CircularProgressIndicator(

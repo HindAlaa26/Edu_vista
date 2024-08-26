@@ -10,13 +10,14 @@ class DefaultTextFormField extends StatelessWidget {
     required this.controller,
     required this.validatorText,
     required this.hintText,
-    required this.label,
+    this.label,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
     this.inputFormatters,
     this.onSaved,
     this.isPassword = false,
     this.enabled = true,
+    this.enableBorder = true,
   });
   final TextEditingController controller;
   final String validatorText;
@@ -24,10 +25,11 @@ class DefaultTextFormField extends StatelessWidget {
   final TextInputAction textInputAction;
   final void Function(String?)? onSaved;
   final List<TextInputFormatter>? inputFormatters;
-  final String label;
+  final String? label;
   final String hintText;
   final bool isPassword;
   final bool enabled;
+  final bool enableBorder;
   InputBorder get textFieldBorder => OutlineInputBorder(
       borderRadius: BorderRadius.circular(5),
       borderSide: const BorderSide(color: ColorUtility.grey));
@@ -41,7 +43,7 @@ class DefaultTextFormField extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: textInApp(
-              text: label,
+              text: label ?? "",
               fontSize: 13.sp,
               fontWeight: FontWeight.w600,
             ),
@@ -61,21 +63,38 @@ class DefaultTextFormField extends StatelessWidget {
               return null;
             },
             style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500),
-            cursorColor: ColorUtility.grey,
+            cursorColor: ColorUtility.secondary,
             keyboardType: keyboardType,
             textInputAction: textInputAction,
             decoration: InputDecoration(
                 hintText: hintText,
-                enabledBorder: textFieldBorder,
-                errorBorder: textFieldBorder.copyWith(
-                  borderSide: const BorderSide(
-                    color: Colors.red,
-                  ),
-                ),
-                focusedErrorBorder: textFieldBorder.copyWith(
-                    borderSide: const BorderSide(color: Colors.red)),
-                focusedBorder: textFieldBorder.copyWith(
-                    borderSide: const BorderSide(color: ColorUtility.grey))),
+                enabledBorder: enableBorder
+                    ? textFieldBorder
+                    : const UnderlineInputBorder(),
+                errorBorder: enableBorder
+                    ? textFieldBorder.copyWith(
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                        ),
+                      )
+                    : const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                        color: Colors.red,
+                      )),
+                focusedErrorBorder: enableBorder
+                    ? textFieldBorder.copyWith(
+                        borderSide: const BorderSide(color: Colors.red))
+                    : const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                        color: Colors.red,
+                      )),
+                focusedBorder: enableBorder
+                    ? textFieldBorder.copyWith(
+                        borderSide: const BorderSide(color: ColorUtility.grey))
+                    : const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                        color: ColorUtility.grey,
+                      ))),
           ),
         ],
       ),

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,8 +80,8 @@ class AuthCubit extends Cubit<AuthState> {
       );
       if (credentials.user != null) {
         credentials.user!.updateDisplayName(nameController.text);
-        credentials.user!.updatePhotoURL(
-            "https://icons.veryicon.com/png/o/system/crm-android-app-icon/app-icon-person.png");
+        // credentials.user!.updatePhotoURL(
+        //     "https://icons.veryicon.com/png/o/system/crm-android-app-icon/app-icon-person.png");
         userCreate(
           email: emailController.text,
           name: nameController.text,
@@ -174,9 +176,89 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<bool> logout(BuildContext context) async {
+  Future<void> fetchUserData() async {
+    emit(UserLoading());
+    try {
+      String? userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) {
+        emit(UserError('No user is currently logged in.'));
+        return;
+      }
+
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .get();
+
+      if (userDoc.exists) {
+        UserModel userModel = UserModel.fromJson({
+          'id': userDoc.id,
+          ...userDoc.data() as Map<String, dynamic>,
+        });
+
+        emit(UserLoaded(userModel));
+      } else {
+        emit(UserError('User document does not exist.'));
+      }
+    } catch (e) {
+      emit(UserError('Error fetching user data: $e'));
+    }
+  }
+
+  Future<void> uploadImage(BuildContext context) async {
+    emit(ImageUploading());
+
+    var imageResult = await FilePicker.platform
+        .pickFiles(type: FileType.image, withData: true);
+    if (imageResult != null) {
+      var storageRef = FirebaseStorage.instance
+          .ref('images/${imageResult.files.first.name}');
+      var uploadResult = await storageRef.putData(
+        imageResult.files.first.bytes!,
+        SettableMetadata(
+          contentType: 'image/${imageResult.files.first.name.split('.').last}',
+        ),
+      );
+
+      if (uploadResult.state == TaskState.success) {
+        var downloadUrl = await uploadResult.ref.getDownloadURL();
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({"image": downloadUrl});
+        print('>>>>>Image uploaded: $downloadUrl');
+
+        fetchUserData();
+      } else {
+        emit(UserError('Image upload failed.'));
+      }
+    } else {
+      print('No file selected');
+      emit(UserError('No file selected.'));
+    }
+  }
+
+  Future<void> updateUserData(
+      {required String name, required BuildContext context}) async {
+    emit(UserUpdating());
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        'name': name,
+      });
+      await FirebaseAuth.instance.currentUser?.updateDisplayName(name);
+      fetchUserData();
+    } catch (e) {
+      emit(UserError('Failed to update user data: $e'));
+    }
+  }
+
+  Future<bool> deleteUser(BuildContext context) async {
     try {
       await FirebaseAuth.instance.currentUser?.delete();
+      if (!context.mounted) return false;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Logged out successfully'),

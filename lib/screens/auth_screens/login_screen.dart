@@ -2,6 +2,7 @@ import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../services/pref_service.dart';
 import '../../shared_component/auth_components/auth_template_component.dart';
 import '../../shared_component/custom_textFormField_component .dart';
 import '../layout_screens/home_layout_screen.dart';
@@ -43,6 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   emailController: emailController,
                   passwordController: passwordController);
               if (result) {
+                if (!context.mounted) return;
+                PreferencesService.isLogin = true;
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

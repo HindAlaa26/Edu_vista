@@ -48,18 +48,20 @@ class _SplashScreenState extends State<SplashScreen> {
     if (mounted) {
       if (PreferencesService.isOnBoardingSeen) {
         if (FirebaseAuth.instance.currentUser != null) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomeLayoutScreen(),
-              ));
-        } else {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginScreen(),
-              ));
-        }
+          if (PreferencesService.isLogin) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeLayoutScreen(),
+                ));
+          } else {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginScreen(),
+                ));
+          }
+        } else {}
       } else {
         Navigator.pushReplacement(
             context,
