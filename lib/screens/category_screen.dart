@@ -1,86 +1,82 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:edu_vista/utils/color_utility.dart';
-import 'package:expansion_tile_list/expansion_tile_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/category_model.dart';
 import '../models/course_model.dart';
-import '../shared_component/course_component.dart';
+import '../shared_component/course_widget.dart';
 import '../shared_component/default_text_component .dart';
+import '../utils/color_utility.dart';
 
 class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({super.key});
+  final Category category;
+  CategoryScreen({super.key, required this.category});
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  var futureCall = FirebaseFirestore.instance.collection('categories').get();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.arrow_back_ios_new)),
-        title: textInApp(text: "Categories"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () {},
-          ),
-        ],
+            icon: const Icon(Icons.arrow_back)),
+        title: textInApp(text: widget.category.name ?? ""),
       ),
-      body: FutureBuilder(
-          future: futureCall,
-          builder: (ctx, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: FirebaseFirestore.instance
+              .collection('courses')
+              .where('category.id',
+                  isEqualTo:
+                      widget.category.id) // Updated query to check nested field
+              .get(),
+          builder: (ctx, courseSnapshot) {
+            if (courseSnapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(color: ColorUtility.secondary),
               );
             }
 
-            if (snapshot.hasError) {
+            if (courseSnapshot.hasError) {
+              print('Error: ${courseSnapshot.error}');
               return Center(
-                child: textInApp(text: 'Error occurred'),
+                child: textInApp(text: 'Error loading courses'),
               );
             }
 
-            if (!snapshot.hasData || (snapshot.data?.docs.isEmpty ?? false)) {
+            if (!courseSnapshot.hasData ||
+                (courseSnapshot.data?.docs.isEmpty ?? false)) {
+              print('No courses found for category: ${widget.category.id}');
               return Center(
-                child: textInApp(text: 'No categories found'),
+                child: textInApp(text: 'No courses found'),
               );
             }
 
-            var categories = List<Category>.from(snapshot.data?.docs
-                    .map((e) => Category.fromJson({'id': e.id, ...e.data()}))
-                    .toList() ??
-                []);
+            var courses = List<Course>.from(
+              courseSnapshot.data?.docs.map((e) {
+                    var course = Course.fromJson({'id': e.id, ...e.data()});
+                    print('Course ID: ${course.id}, Title: ${course.title}');
+                    return course;
+                  }).toList() ??
+                  [],
+            );
 
-            return ListView.separated(
-              scrollDirection: Axis.vertical,
-              itemCount: categories.length,
-              separatorBuilder: (context, index) => SizedBox(
-                width: 10.w,
-              ),
-              itemBuilder: (context, index) => ExpansionTileList(
-                trailing: const Icon((Icons.double_arrow)),
-                children: [
-                  ExpansionTile(
-                    title: Text('${categories[index].name}'),
-                    children: [textInApp(text: "Soon....")],
-                  ),
-                ],
+            return Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: courseWidget(
+                context: context,
+                isSeeAll: true,
+                courses: courses,
               ),
             );
-          }),
+          },
+        ),
+      ),
     );
   }
 }

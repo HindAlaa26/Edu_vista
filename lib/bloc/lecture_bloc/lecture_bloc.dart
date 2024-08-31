@@ -28,7 +28,6 @@ class LectureBloc extends Bloc<LectureEvent, LectureState> {
             .map((doc) => Lecture.fromJson({'id': doc.id, ...doc.data()}))
             .toList();
 
-        // Emit the first lecture as selected by default
         emit(LectureLoadedState(
           lectures,
           selectedLectureIndex: 0,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edu_vista/screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -53,17 +54,28 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                 separatorBuilder: (context, index) => SizedBox(
                   width: 10.w,
                 ),
-                itemBuilder: (context, index) => Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffE0E0E0),
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: Center(
-                    child: textInApp(
-                        text: categories[index].name ?? 'No Name',
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
+                itemBuilder: (context, index) => InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryScreen(
+                            category: categories[index],
+                          ),
+                        ));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffE0E0E0),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Center(
+                      child: textInApp(
+                          text: categories[index].name ?? 'No Name',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               );

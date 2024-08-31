@@ -1,14 +1,14 @@
-import 'package:edu_vista/main.dart';
+import 'package:edu_vista/screens/see_all_courses_screen.dart';
 import 'package:edu_vista/shared_component/default_text_component%20.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../shared_component/category_shared_component.dart';
+import '../shared_component/category_widget.dart';
 import '../shared_component/course_component.dart';
 import '../shared_component/home_label_shared_component.dart';
-import 'category_screen.dart';
+import 'see_all_category_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const CategoryScreen(),
+                        builder: (context) => const SeeAllCategoryScreen(),
                       ));
                 },
               ),
@@ -65,9 +65,16 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             LabelWidget(
                               name: coursesHeadlines[index],
-                              onSeeAllClicked: () {},
+                              onSeeAllClicked: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SeeAllCoursesScreen(
+                                          rankValue: coursesHeadlines[index]),
+                                    ));
+                              },
                             ),
-                            CourseWidget(
+                            CourseComponent(
                               rankValue: coursesHeadlines[index],
                             ),
                           ],

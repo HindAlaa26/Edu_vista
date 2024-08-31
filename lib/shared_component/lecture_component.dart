@@ -48,7 +48,7 @@ class _LecturesWidgetState extends State<LecturesWidget> {
               ),
               itemCount: lectures.length,
               shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
+              physics: const ScrollPhysics(),
               addAutomaticKeepAlives: true,
               itemBuilder: (context, index) {
                 return buildLectureItem(
