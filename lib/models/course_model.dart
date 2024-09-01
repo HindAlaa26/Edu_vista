@@ -39,4 +39,21 @@ class Course {
         ? (data['createdDate'] as Timestamp).toDate()
         : null;
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'image': image,
+      'category': category?.toJson(),
+      'currency': currency,
+      'rank': rank,
+      'hasCertificate': hasCertificate,
+      'instructor': instructor?.toJson(),
+      'price': price,
+      'rating': rating,
+      'totalHours': totalHours,
+      'createdDate':
+          createdDate != null ? Timestamp.fromDate(createdDate!) : null,
+    };
+  }
 }

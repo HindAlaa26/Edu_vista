@@ -36,10 +36,31 @@ Widget courseWidget({
                 flex: 10,
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(9),
-                      image: DecorationImage(
-                          image: NetworkImage(courses[index].image ?? ""),
-                          fit: BoxFit.fill)),
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  child: Stack(
+                    children: [
+                      // when NetworkImage fails
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(9),
+                            color: ColorUtility.grey),
+                      ),
+                      // when NetworkImage loads
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(9),
+                          image: DecorationImage(
+                            image: NetworkImage(courses[index].image ?? ""),
+                            fit: BoxFit.fill,
+                            onError: (exception, stackTrace) {
+                              print('Error loading image: $exception');
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(

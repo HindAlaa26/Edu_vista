@@ -1,3 +1,5 @@
+import 'package:edu_vista/screens/cart_screen.dart';
+import 'package:edu_vista/shared_component/default_button_component%20.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -7,6 +9,8 @@ import 'package:edu_vista/bloc/lecture_bloc/lecture_state.dart';
 import 'package:edu_vista/models/course_model.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../bloc/cart_bloc/cart_bloc.dart';
+import '../bloc/cart_bloc/cart_event.dart';
 import '../shared_component/default_text_component .dart';
 import '../shared_component/lecture_component.dart';
 import '../utils/app_enum.dart';
@@ -107,9 +111,32 @@ class _LectureScreenState extends State<LectureScreen>
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: textInApp(
-                                text: widget.course.title ?? "Course Name",
-                                color: const Color(0xff1D1B20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  textInApp(
+                                    text: widget.course.title ?? "Course Name",
+                                    color: const Color(0xff1D1B20),
+                                  ),
+                                  SizedBox(
+                                    width: 50.w,
+                                  ),
+                                  Expanded(
+                                    child: defaultButton(
+                                        text: "Add To Cart",
+                                        onTap: () {
+                                          context.read<CartBloc>().add(
+                                              AddCourseToCart(widget.course));
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CartScreen(),
+                                              ));
+                                        }),
+                                  )
+                                ],
                               ),
                             ),
                             Padding(
