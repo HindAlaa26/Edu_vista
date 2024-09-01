@@ -10,10 +10,14 @@ class AddCourseToCart extends CartEvent {
   AddCourseToCart(this.course);
 }
 
-class RemoveCourseFromCart extends CartEvent {
+// class RemoveCourseFromCart extends CartEvent {
+//   final Course course;
+//
+//   RemoveCourseFromCart(this.course);
+// }
+
+class CheckoutCart extends CartEvent {
   final Course course;
 
-  RemoveCourseFromCart(this.course);
+  CheckoutCart(this.course);
 }
-
-class CheckoutCart extends CartEvent {}

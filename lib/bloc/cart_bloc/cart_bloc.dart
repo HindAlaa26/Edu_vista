@@ -14,7 +14,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartInitial()) {
     on<LoadCart>(_onLoadCart);
     on<AddCourseToCart>(_onAddCourseToCart);
-    on<RemoveCourseFromCart>(_onRemoveCourseFromCart);
+    // on<RemoveCourseFromCart>(_onRemoveCourseFromCart);
     on<CheckoutCart>(_onCheckoutCart);
   }
 
@@ -38,38 +38,27 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       AddCourseToCart event, Emitter<CartState> emit) async {
     _courses.add(event.course);
     emit(CartLoaded(_courses, _calculateTotalPrice()));
-    await _saveCartToFirestore();
-  }
-
-  Future<void> _onRemoveCourseFromCart(
-      RemoveCourseFromCart event, Emitter<CartState> emit) async {
-    _courses.remove(event.course);
-    emit(CartLoaded(_courses, _calculateTotalPrice()));
-    await _saveCartToFirestore();
+    await _saveCartToFireStore();
   }
 
   Future<void> _onCheckoutCart(
       CheckoutCart event, Emitter<CartState> emit) async {
     emit(CartLoading());
     try {
-      _courses.clear();
-      emit(CartLoaded(_courses, 0.0));
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('cart')
-          .get()
-          .then((snapshot) {
-        for (DocumentSnapshot ds in snapshot.docs) {
-          ds.reference.delete();
-        }
-      });
+      _courses.remove(event.course);
+
+      final cartRef =
+          _firestore.collection('users').doc(userId).collection('cart');
+      final docRef = cartRef.doc(event.course.id);
+      await docRef.delete();
+
+      emit(CartLoaded(_courses, _calculateTotalPrice()));
     } catch (e) {
       emit(CartError('Checkout failed: ${e.toString()}'));
     }
   }
 
-  Future<void> _saveCartToFirestore() async {
+  Future<void> _saveCartToFireStore() async {
     final cartRef =
         _firestore.collection('users').doc(userId).collection('cart');
     final batch = _firestore.batch();
