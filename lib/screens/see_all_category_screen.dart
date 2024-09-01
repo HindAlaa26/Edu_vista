@@ -81,6 +81,12 @@ class _SeeAllCategoryScreenState extends State<SeeAllCategoryScreen> {
               children: [
                 ExpansionTile(
                   title: Text('${categories[index].name}'),
+                  textColor: ColorUtility.secondary,
+                  iconColor: ColorUtility.secondary,
+                  childrenPadding: const EdgeInsets.all(6),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                      side: const BorderSide(color: ColorUtility.secondary)),
                   children: [
                     FutureBuilder(
                       future: FirebaseFirestore.instance
