@@ -1,17 +1,17 @@
 import 'package:animated_rating_stars/animated_rating_stars.dart';
-import 'package:edu_vista/screens/payment_screen.dart';
+import 'package:edu_vista/screens/cart_screens/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../bloc/cart_bloc/cart_bloc.dart';
-import '../bloc/cart_bloc/cart_event.dart';
-import '../models/course_model.dart';
-import '../screens/check_out_screen.dart';
-import '../screens/lecture_screen.dart';
-import '../utils/color_utility.dart';
-import 'default_button_component .dart';
-import 'default_text_component .dart';
+import '../../bloc/cart_bloc/cart_bloc.dart';
+import '../../bloc/cart_bloc/cart_event.dart';
+import '../../models/course_model.dart';
+import '../../screens/cart_screens/check_out_screen.dart';
+import '../../screens/lecture_screen/lecture_screen.dart';
+import '../../utils/color_utility.dart';
+import '../default_button_component .dart';
+import '../default_text_component .dart';
 
 class CustomCartTile extends StatefulWidget {
   final Course course;

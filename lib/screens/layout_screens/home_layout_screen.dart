@@ -6,11 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../cubit/auth_cubit.dart';
 import '../../models/user_model.dart';
-import '../chat_screen.dart';
-import '../courses_screen.dart';
-import '../home_screen.dart';
-import '../profile_screen.dart';
-import '../search_screen.dart';
+import '../chat_screens/chat_screen.dart';
+import '../course_screens/courses_screen.dart';
+import '../home_screen/home_screen.dart';
+import '../profile_screen/profile_screen.dart';
+import '../search_screen/search_screen.dart';
 
 class HomeLayoutScreen extends StatefulWidget {
   HomeLayoutScreen({super.key});

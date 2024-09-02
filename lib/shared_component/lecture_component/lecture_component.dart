@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../bloc/lecture_bloc/lecture_bloc.dart';
-import '../bloc/lecture_bloc/lecture_state.dart';
-import '../models/course_model.dart';
-import '../utils/app_enum.dart';
-import '../utils/color_utility.dart';
-import 'default_text_component .dart';
+import '../../bloc/lecture_bloc/lecture_bloc.dart';
+import '../../bloc/lecture_bloc/lecture_state.dart';
+import '../../models/course_model.dart';
+import '../../utils/app_enum.dart';
+import '../../utils/color_utility.dart';
+import '../default_text_component .dart';
 
 class LecturesWidget extends StatefulWidget {
   final CourseOptions courseOption;

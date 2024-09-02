@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/cart_bloc/cart_bloc.dart';
 import '../bloc/cart_bloc/cart_state.dart';
-import '../screens/cart_screen.dart';
+import '../screens/cart_screens/cart_screen.dart';
 
 Widget shoppingIcon() {
   return BlocBuilder<CartBloc, CartState>(

@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/shared_component/default_text_component%20.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
-import '../models/course_model.dart';
-import '../screens/lecture_screen.dart';
+
+import '../../models/course_model.dart';
+import '../../screens/lecture_screen/lecture_screen.dart';
 
 class CourseTitleComponent extends StatefulWidget {
   final String rankValue;

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../models/category_model.dart';
-import '../models/course_model.dart';
-import '../shared_component/course_widget.dart';
-import '../shared_component/default_text_component .dart';
-import '../utils/color_utility.dart';
+import '../../models/category_model.dart';
+import '../../models/course_model.dart';
+import '../../shared_component/course_component/course_widget.dart';
+import '../../shared_component/default_text_component .dart';
+import '../../utils/color_utility.dart';
 
 class CategoryScreen extends StatefulWidget {
   final Category category;

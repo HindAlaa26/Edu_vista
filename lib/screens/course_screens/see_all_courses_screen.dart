@@ -1,6 +1,6 @@
 import 'package:edu_vista/shared_component/default_text_component%20.dart';
 import 'package:flutter/material.dart';
-import '../shared_component/course_component.dart';
+import '../../shared_component/course_component/course_component.dart';
 
 class SeeAllCoursesScreen extends StatelessWidget {
   final String rankValue;

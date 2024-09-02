@@ -4,13 +4,13 @@ import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../cubit/auth_cubit.dart';
-import '../cubit/auth_state.dart';
-import '../models/user_model.dart';
-import '../shared_component/custom_textFormField_component .dart';
-import '../shared_component/default_text_component .dart';
-import '../shared_component/shopping_icon_widget.dart';
-import 'auth_screens/login_screen.dart';
+import '../../cubit/auth_cubit.dart';
+import '../../cubit/auth_state.dart';
+import '../../models/user_model.dart';
+import '../../shared_component/custom_textFormField_component .dart';
+import '../../shared_component/default_text_component .dart';
+import '../../shared_component/shopping_icon_widget.dart';
+import '../auth_screens/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

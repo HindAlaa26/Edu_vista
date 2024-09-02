@@ -1,13 +1,15 @@
-import 'package:edu_vista/shared_component/default_text_component%20.dart';
-import 'package:edu_vista/utils/color_utility.dart';
+import 'package:edu_vista/models/course_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/cart_bloc/cart_bloc.dart';
-import '../bloc/cart_bloc/cart_state.dart';
-import '../shared_component/custom_cart_component.dart';
+import '../../bloc/cart_bloc/cart_bloc.dart';
+import '../../bloc/cart_bloc/cart_state.dart';
+import '../../shared_component/cart_component/custom_cart_component.dart';
+import '../../shared_component/default_text_component .dart';
+import '../../utils/color_utility.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+class CheckOutScreen extends StatelessWidget {
+  final Course course;
+  const CheckOutScreen({super.key, required this.course});
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +32,10 @@ class CartScreen extends StatelessWidget {
             return Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: state.courses.length,
-                    itemBuilder: (context, index) {
-                      final course = state.courses[index];
-                      return CustomCartTile(
-                        course: course,
-                      );
-                    },
-                  ),
-                ),
+                    child: CustomCartTile(
+                  course: course,
+                  isCheckOutScreen: true,
+                )),
                 Container(
                   color: Colors.teal.shade50,
                   child: Padding(
@@ -49,7 +45,7 @@ class CartScreen extends StatelessWidget {
                       children: [
                         textInApp(
                             text:
-                                'Total: \$${state.totalPrice.toStringAsFixed(2)}'),
+                                'Total: \$${course.price?.toStringAsFixed(2)}'),
                       ],
                     ),
                   ),

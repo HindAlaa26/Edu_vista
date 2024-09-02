@@ -1,17 +1,19 @@
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../models/course_model.dart';
-import '../bloc/course_bloc/course_bloc.dart';
-import '../bloc/course_bloc/course_event.dart';
-import '../bloc/course_bloc/course_state.dart';
-import '../shared_component/course_title_component.dart';
-import '../shared_component/default_text_component .dart';
-import '../shared_component/shopping_icon_widget.dart';
-import 'lecture_screen.dart';
+import '../../../models/course_model.dart';
+import '../../bloc/course_bloc/course_bloc.dart';
+import '../../bloc/course_bloc/course_event.dart';
+import '../../bloc/course_bloc/course_state.dart';
+import '../../shared_component/course_component/course_title_component.dart';
+import '../../shared_component/default_text_component .dart';
+import '../../shared_component/shopping_icon_widget.dart';
+import '../lecture_screen/lecture_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
+
+  SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/course_model.dart';
+import '../../models/course_model.dart';
 
 import 'course_widget.dart';
 

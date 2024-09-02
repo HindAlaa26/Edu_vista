@@ -2,10 +2,10 @@ import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../models/course_model.dart';
-import '../screens/lecture_screen.dart';
-import '../utils/color_utility.dart';
-import 'default_text_component .dart';
+import '../../models/course_model.dart';
+import '../../screens/lecture_screen/lecture_screen.dart';
+import '../../utils/color_utility.dart';
+import '../default_text_component .dart';
 
 Widget courseWidget({
   required BuildContext context,

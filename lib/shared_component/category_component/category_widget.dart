@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:edu_vista/screens/category_screen.dart';
+import 'package:edu_vista/screens/category_screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../models/category_model.dart';
-import '../utils/color_utility.dart';
-import 'default_text_component .dart';
+import '../../models/category_model.dart';
+import '../../utils/color_utility.dart';
+import '../default_text_component .dart';
 
 class CategoriesWidget extends StatefulWidget {
   const CategoriesWidget({super.key});
