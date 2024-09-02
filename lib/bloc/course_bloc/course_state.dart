@@ -1,14 +1,21 @@
-// import 'package:flutter/material.dart';
-//
-// import '../../utils/app_enum.dart';
-//
-// @immutable
-// sealed class CourseState {}
-//
-// final class CourseInitial extends CourseState {}
-//
-// class CourseOptionStateChanges extends CourseState {
-//   final CourseOptions courseOption;
-//
-//   CourseOptionStateChanges(this.courseOption);
-// }
+import '../../models/course_model.dart';
+
+abstract class CourseSearchState {}
+
+class CourseSearchInitial extends CourseSearchState {}
+
+class CourseSearchLoading extends CourseSearchState {}
+
+class CourseSearchEmpty extends CourseSearchState {}
+
+class CourseSearchLoaded extends CourseSearchState {
+  final List<Course> courses;
+
+  CourseSearchLoaded(this.courses);
+}
+
+class CourseSearchError extends CourseSearchState {
+  final String message;
+
+  CourseSearchError(this.message);
+}

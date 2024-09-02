@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'bloc/cart_bloc/cart_bloc.dart';
 import 'bloc/cart_bloc/cart_event.dart';
+import 'bloc/course_bloc/course_bloc.dart';
 import 'bloc/lecture_bloc/lecture_bloc.dart';
 
 void main() async {
@@ -31,6 +32,7 @@ void main() async {
         providers: [
           BlocProvider(create: (ctx) => AuthCubit()),
           BlocProvider(create: (ctx) => LectureBloc()),
+          BlocProvider(create: (ctx) => CourseSearchBloc()),
           BlocProvider(create: (ctx) => CartBloc()..add(LoadCart())),
         ],
         child: const MyApp(),
@@ -60,6 +62,8 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               fontFamily: "PlusJakartaSans",
               colorScheme: ColorScheme.fromSeed(seedColor: ColorUtility.main),
+              appBarTheme:
+                  const AppBarTheme(color: ColorUtility.scaffoldBackground),
               scaffoldBackgroundColor: ColorUtility.scaffoldBackground,
               useMaterial3: true,
             ),

@@ -1,21 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/services/pref_service.dart';
 import 'package:edu_vista/shared_component/default_button_component%20.dart';
 import 'package:edu_vista/utils/color_utility.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 import '../models/user_model.dart';
 import '../shared_component/custom_textFormField_component .dart';
 import '../shared_component/default_text_component .dart';
+import '../shared_component/shopping_icon_widget.dart';
 import 'auth_screens/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -47,12 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: textInApp(text: 'Profile'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () {},
-          ),
-        ],
+        actions: [shoppingIcon()],
       ),
       body: SingleChildScrollView(
         child: BlocProvider(
