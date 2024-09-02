@@ -1,11 +1,14 @@
+import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/course_model.dart';
 import '../bloc/course_bloc/course_bloc.dart';
 import '../bloc/course_bloc/course_event.dart';
 import '../bloc/course_bloc/course_state.dart';
+import '../shared_component/course_title_component.dart';
 import '../shared_component/default_text_component .dart';
 import '../shared_component/shopping_icon_widget.dart';
+import 'lecture_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
@@ -62,7 +65,21 @@ class SearchScreen extends StatelessWidget {
                   } else if (state is CourseSearchError) {
                     return Center(child: Text("Error: ${state.message}"));
                   } else {
-                    return Container();
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              textInApp(text: "Trending", fontSize: 18),
+                            ],
+                          ),
+                        ),
+                        const CourseTitleComponent(rankValue: "Top Sellers")
+                      ],
+                    );
                   }
                 },
               ),
@@ -79,16 +96,32 @@ class SearchScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final course = courses[index];
         return ListTile(
-          title: Text(course.title ?? "No Title"),
-          subtitle: Text(course.instructor?.name ?? "No Instructor"),
+          title: textInApp(text: course.title ?? "No Title"),
+          subtitle: textInApp(text: course.instructor?.name ?? "No Instructor"),
           leading: Image.network(
             course.image ?? "",
             width: 50,
             height: 50,
             fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return const CircularProgressIndicator(
+                color: ColorUtility.secondary,
+              );
+            },
+            errorBuilder: (context, error, stackTrace) => const Icon(
+              Icons.error,
+              color: ColorUtility.main,
+            ),
           ),
           onTap: () {
-            // Handle course item tap, e.g., navigate to course details
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LectureScreen(
+                    course: courses[index],
+                  ),
+                ));
           },
         );
       },
