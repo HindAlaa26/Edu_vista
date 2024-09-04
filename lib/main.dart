@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'bloc/cart_bloc/cart_bloc.dart';
 import 'bloc/cart_bloc/cart_event.dart';
@@ -25,6 +26,7 @@ void main() async {
   } catch (e) {
     print('Failed to initialize Firebase: $e');
   }
+  await dotenv.load(fileName: ".env");
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,

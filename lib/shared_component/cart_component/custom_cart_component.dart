@@ -174,7 +174,7 @@ class _CustomCartTileState extends State<CustomCartTile> {
                               widget.isCheckOutScreen
                                   ? (context
                                       .read<CartBloc>()
-                                      .add(CheckoutCart(widget.course)))
+                                      .add(RemoveCourseFromCart(widget.course)))
                                   : (setState(() {
                                       checkCard = false;
                                     }));
@@ -191,8 +191,10 @@ class _CustomCartTileState extends State<CustomCartTile> {
                                   ? Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const PaymentScreen(),
+                                        builder: (context) => PaymentScreen(
+                                          price: widget.course.price,
+                                          course: widget.course,
+                                        ),
                                       ))
                                   : Navigator.push(
                                       context,
