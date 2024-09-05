@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../bloc/cart_bloc/cart_bloc.dart';
 import '../bloc/cart_bloc/cart_state.dart';
@@ -14,32 +15,35 @@ Widget shoppingIcon() {
         );
       } else if (state is CartLoaded) {
         final cartItemCount = state.courses.length;
-        return Stack(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.shopping_cart_outlined),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CartScreen(),
-                  ),
-                );
-              },
-            ),
-            if (cartItemCount > 0)
-              Positioned(
-                right: 0,
-                child: CircleAvatar(
-                  radius: 10,
-                  backgroundColor: Colors.red,
-                  child: Text(
-                    cartItemCount.toString(),
-                    style: const TextStyle(fontSize: 12, color: Colors.white),
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          child: Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart_outlined),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CartScreen(),
+                    ),
+                  );
+                },
+              ),
+              if (cartItemCount > 0)
+                Positioned(
+                  right: 0,
+                  child: CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Colors.red,
+                    child: Text(
+                      cartItemCount.toString(),
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         );
       } else if (state is CartError) {
         return IconButton(

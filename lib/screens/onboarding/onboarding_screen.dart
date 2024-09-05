@@ -30,9 +30,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            PageView(
+          child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    onBoardingController.animateToPage(3,
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.decelerate);
+                  },
+                  child: textInApp(
+                      text: "Skip",
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff3A3A3A)),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: PageView(
               controller: onBoardingController,
               onPageChanged: (value) {
                 setState(() {
@@ -67,81 +88,56 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                child: TextButton(
-                  onPressed: () {
-                    onBoardingController.animateToPage(3,
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.decelerate);
-                  },
-                  child: textInApp(
-                      text: "Skip",
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xff3A3A3A)),
-                ),
-              ),
-            ),
-            currentPage == 3
-                ? Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                        padding: const EdgeInsets.only(bottom: 60),
-                        child: defaultButton(
-                            text: "Let's Start",
-                            onTap: () {
-                              onLogin();
-                            })),
-                  )
-                : Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                                4,
-                                (index) => Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 5.w, vertical: 10.h),
-                                      decoration: BoxDecoration(
-                                          color: currentPage == index
-                                              ? ColorUtility.secondary
-                                              : const Color(0xff3A3A3A),
-                                          borderRadius:
-                                              BorderRadius.circular(128)),
-                                      height: 7.h,
-                                      width: 42.w,
-                                    ))),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 30.h, horizontal: 19.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ArrowIcon(
-                                currentPage: currentPage,
-                                isNext: false,
-                                onBoardingController: onBoardingController,
-                              ),
-                              ArrowIcon(
-                                currentPage: currentPage,
-                                isNext: true,
-                                onBoardingController: onBoardingController,
-                              ),
-                            ],
+          ),
+          currentPage == 3
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 60),
+                  child: defaultButton(
+                      text: "Let's Start",
+                      onTap: () {
+                        onLogin();
+                      }))
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                            4,
+                            (index) => Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 5.w, vertical: 10.h),
+                                  decoration: BoxDecoration(
+                                      color: currentPage == index
+                                          ? ColorUtility.secondary
+                                          : const Color(0xff3A3A3A),
+                                      borderRadius: BorderRadius.circular(128)),
+                                  height: 7.h,
+                                  width: 42.w,
+                                ))),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 30.h, horizontal: 19.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ArrowIcon(
+                            currentPage: currentPage,
+                            isNext: false,
+                            onBoardingController: onBoardingController,
                           ),
-                        ),
-                      ],
+                          ArrowIcon(
+                            currentPage: currentPage,
+                            isNext: true,
+                            onBoardingController: onBoardingController,
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-          ],
-        ),
-      ),
+                  ],
+                )
+        ],
+      )),
     );
   }
 

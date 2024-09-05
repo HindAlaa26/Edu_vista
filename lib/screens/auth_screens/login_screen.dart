@@ -61,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 DefaultTextFormField(
                   controller: emailController,
                   validatorText: 'Email',
+                  keyboardType: TextInputType.emailAddress,
                   label: 'Email',
                   hintText: "demo@mail.com",
                 ),

@@ -34,7 +34,7 @@ void main() async {
         providers: [
           BlocProvider(create: (ctx) => AuthCubit()),
           BlocProvider(create: (ctx) => LectureBloc()),
-          BlocProvider(create: (ctx) => CourseSearchBloc()),
+          BlocProvider(create: (ctx) => CourseBloc()),
           BlocProvider(create: (ctx) => CartBloc()..add(LoadCart())),
         ],
         child: const MyApp(),

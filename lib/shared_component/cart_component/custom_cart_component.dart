@@ -188,7 +188,7 @@ class _CustomCartTileState extends State<CustomCartTile> {
                                 : "Buy Now",
                             onTap: () {
                               widget.isCheckOutScreen
-                                  ? Navigator.push(
+                                  ? Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => PaymentScreen(
@@ -196,7 +196,7 @@ class _CustomCartTileState extends State<CustomCartTile> {
                                           course: widget.course,
                                         ),
                                       ))
-                                  : Navigator.push(
+                                  : Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => CheckOutScreen(

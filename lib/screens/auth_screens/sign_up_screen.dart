@@ -74,6 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 DefaultTextFormField(
                   controller: emailController,
                   validatorText: 'Email',
+                  keyboardType: TextInputType.emailAddress,
                   label: 'Email',
                   hintText: "demo@mail.com",
                 ),

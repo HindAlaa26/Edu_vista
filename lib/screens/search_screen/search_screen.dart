@@ -27,7 +27,7 @@ class SearchScreen extends StatelessWidget {
           child: TextField(
             controller: searchController,
             onChanged: (value) {
-              BlocProvider.of<CourseSearchBloc>(context).add(
+              BlocProvider.of<CourseBloc>(context).add(
                 FetchCourses(
                   title: value.trim(),
                 ),
@@ -39,7 +39,7 @@ class SearchScreen extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search, color: Colors.grey),
                 onPressed: () {
-                  BlocProvider.of<CourseSearchBloc>(context).add(
+                  BlocProvider.of<CourseBloc>(context).add(
                     FetchCourses(
                       title: searchController.text.trim(),
                     ),
@@ -56,7 +56,7 @@ class SearchScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: BlocBuilder<CourseSearchBloc, CourseSearchState>(
+              child: BlocBuilder<CourseBloc, CourseState>(
                 builder: (context, state) {
                   if (state is CourseSearchLoading) {
                     return const Center(child: CircularProgressIndicator());
@@ -65,7 +65,8 @@ class SearchScreen extends StatelessWidget {
                   } else if (state is CourseSearchEmpty) {
                     return Center(child: textInApp(text: "No courses found."));
                   } else if (state is CourseSearchError) {
-                    return Center(child: Text("Error: ${state.message}"));
+                    return Center(
+                        child: textInApp(text: "Error: ${state.message}"));
                   } else {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
