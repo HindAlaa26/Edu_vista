@@ -1,8 +1,6 @@
 import 'package:edu_vista/screens/cart_screens/cart_screen.dart';
-import 'package:edu_vista/shared_component/default_button_component%20.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:edu_vista/bloc/lecture_bloc/lecture_bloc.dart';
 import 'package:edu_vista/bloc/lecture_bloc/lecture_event.dart';
 import 'package:edu_vista/bloc/lecture_bloc/lecture_state.dart';
@@ -11,8 +9,10 @@ import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../bloc/cart_bloc/cart_bloc.dart';
 import '../../bloc/cart_bloc/cart_event.dart';
+import '../../shared_component/default_button_component .dart';
 import '../../shared_component/default_text_component .dart';
 import '../../shared_component/lecture_component/lecture_component.dart';
+import '../../shared_component/video_player.dart';
 import '../../utils/app_enum.dart';
 
 class LectureScreen extends StatefulWidget {
@@ -27,21 +27,15 @@ class LectureScreen extends StatefulWidget {
 class _LectureScreenState extends State<LectureScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
-  late YoutubePlayerController _videoPlayerController;
-
+  String? videoID;
   @override
   void initState() {
     super.initState();
-    _videoPlayerController = YoutubePlayerController(
-      initialVideoId: '',
-      flags: const YoutubePlayerFlags(autoPlay: false),
-    );
     tabController = TabController(length: 4, vsync: this);
   }
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
     tabController.dispose();
     super.dispose();
   }
@@ -53,12 +47,15 @@ class _LectureScreenState extends State<LectureScreen>
         ..add(LoadLecturesEvent(courseId: widget.course.id ?? "")),
       child: BlocListener<LectureBloc, LectureState>(
         listener: (context, state) {
-          if (state is LectureLoadedState && state.selectedLectureUrl != null) {
-            final videoID =
-                YoutubePlayer.convertUrlToId(state.selectedLectureUrl!);
-            if (videoID != null) {
-              _videoPlayerController.load(videoID);
+          if (state is LectureLoadedState) {
+            if (state.selectedLectureUrl != videoID) {
+              setState(() {
+                videoID = state.selectedLectureUrl;
+                print("Video URL updated to: $videoID"); // Debug statement
+              });
             }
+          } else if (state is LectureErrorState) {
+            print("Error: ${state.error}"); // Debug statement
           }
         },
         child: Scaffold(
@@ -68,17 +65,18 @@ class _LectureScreenState extends State<LectureScreen>
               Expanded(
                 child: Stack(
                   children: [
-                    YoutubePlayer(
-                      controller: _videoPlayerController,
-                      showVideoProgressIndicator: true,
-                      progressIndicatorColor: ColorUtility.secondary,
-                      progressColors: const ProgressBarColors(
-                        backgroundColor: ColorUtility.grey,
-                        bufferedColor: ColorUtility.grey,
-                        handleColor: Colors.red,
-                        playedColor: Colors.red,
-                      ),
-                    ),
+                    videoID == null || videoID!.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 100),
+                            child: SizedBox(
+                                width: ScreenUtil().screenWidth,
+                                child: textInApp(
+                                    text: "No video", color: Colors.white)),
+                          )
+                        : VideoWidget(
+                            videoUrl: videoID!,
+                            key: ValueKey(videoID),
+                          ),
                     Positioned(
                       top: 16,
                       left: 16,
@@ -119,22 +117,21 @@ class _LectureScreenState extends State<LectureScreen>
                                     text: widget.course.title ?? "Course Name",
                                     color: const Color(0xff1D1B20),
                                   ),
-                                  SizedBox(
-                                    width: 50.w,
-                                  ),
+                                  SizedBox(width: 50.w),
                                   Expanded(
                                     child: defaultButton(
-                                        text: "Add To Cart",
-                                        onTap: () {
-                                          context.read<CartBloc>().add(
-                                              AddCourseToCart(widget.course));
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CartScreen(),
-                                              ));
-                                        }),
+                                      text: "Add To Cart",
+                                      onTap: () {
+                                        context.read<CartBloc>().add(
+                                            AddCourseToCart(widget.course));
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CartScreen(),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   )
                                 ],
                               ),
