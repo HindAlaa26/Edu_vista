@@ -1,18 +1,18 @@
-import 'package:edu_vista/screens/cart_screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:edu_vista/bloc/lecture_bloc/lecture_bloc.dart';
 import 'package:edu_vista/bloc/lecture_bloc/lecture_event.dart';
 import 'package:edu_vista/bloc/lecture_bloc/lecture_state.dart';
 import 'package:edu_vista/models/course_model.dart';
-import 'package:edu_vista/utils/color_utility.dart';
+import 'package:edu_vista/shared_component/lecture_component/lecture_component.dart';
+import 'package:edu_vista/shared_component/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../bloc/cart_bloc/cart_bloc.dart';
-import '../../bloc/cart_bloc/cart_event.dart';
+import 'package:edu_vista/bloc/cart_bloc/cart_bloc.dart';
+import 'package:edu_vista/bloc/cart_bloc/cart_event.dart';
+import 'package:edu_vista/screens/cart_screens/cart_screen.dart';
+import 'package:edu_vista/utils/color_utility.dart';
 import '../../shared_component/default_button_component .dart';
 import '../../shared_component/default_text_component .dart';
-import '../../shared_component/lecture_component/lecture_component.dart';
-import '../../shared_component/video_player.dart';
 import '../../utils/app_enum.dart';
 
 class LectureScreen extends StatefulWidget {
@@ -28,6 +28,7 @@ class _LectureScreenState extends State<LectureScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
   String? videoID;
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +41,7 @@ class _LectureScreenState extends State<LectureScreen>
     super.dispose();
   }
 
+  bool isIndicatorColor = true;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -51,11 +53,11 @@ class _LectureScreenState extends State<LectureScreen>
             if (state.selectedLectureUrl != videoID) {
               setState(() {
                 videoID = state.selectedLectureUrl;
-                print("Video URL updated to: $videoID"); // Debug statement
+                print("Video URL updated to: $videoID");
               });
             }
           } else if (state is LectureErrorState) {
-            print("Error: ${state.error}"); // Debug statement
+            print("Error: ${state.error}");
           }
         },
         child: Scaffold(
@@ -108,7 +110,8 @@ class _LectureScreenState extends State<LectureScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w, vertical: 7.h),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -149,24 +152,21 @@ class _LectureScreenState extends State<LectureScreen>
                             SizedBox(height: 10.h),
                             TabBar(
                               controller: tabController,
-                              unselectedLabelColor: ColorUtility.black,
-                              indicatorColor: ColorUtility.secondary,
+                              unselectedLabelColor: ColorUtility.grey,
                               labelColor: Colors.white,
-                              physics: const BouncingScrollPhysics(),
+                              indicatorColor: Colors.transparent,
                               isScrollable: true,
-                              indicatorPadding:
-                                  EdgeInsets.symmetric(horizontal: -10.w),
-                              indicatorWeight: 5,
-                              indicator: BoxDecoration(
-                                color: ColorUtility.secondary,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
                               tabs: [
-                                textInApp(text: 'Lecture', fontSize: 15),
-                                textInApp(text: 'Download', fontSize: 15),
-                                textInApp(text: 'Certificate', fontSize: 15),
-                                textInApp(text: 'More', fontSize: 15),
+                                _buildTab('Lecture', 0),
+                                _buildTab('Download', 1),
+                                _buildTab('Certificate', 2),
+                                _buildTab('More', 3),
                               ],
+                              onTap: (index) {
+                                setState(() {
+                                  tabController.index = index;
+                                });
+                              },
                             ),
                             SizedBox(
                               height: 600.h,
@@ -202,6 +202,24 @@ class _LectureScreenState extends State<LectureScreen>
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTab(String text, int index) {
+    bool isSelected = tabController.index == index;
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: isSelected ? ColorUtility.secondary : ColorUtility.grey,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Center(
+        child: textInApp(
+          text: text,
+          fontSize: 15,
+          color: isSelected ? Colors.white : ColorUtility.black,
         ),
       ),
     );
