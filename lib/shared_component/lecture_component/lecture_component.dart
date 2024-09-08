@@ -14,6 +14,7 @@ import '../default_text_component .dart';
 class LecturesWidget extends StatefulWidget {
   final CourseOptions courseOption;
   final Course course;
+
   const LecturesWidget({
     required this.course,
     super.key,
@@ -25,6 +26,20 @@ class LecturesWidget extends StatefulWidget {
 }
 
 class _LecturesWidgetState extends State<LecturesWidget> {
+  final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.courseOption == CourseOptions.lecture) {
+      context.read<LectureBloc>().add(
+            LoadLecturesEvent(
+              courseId: widget.course.id ?? '',
+            ),
+          );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LectureBloc, LectureState>(
@@ -48,7 +63,7 @@ class _LecturesWidgetState extends State<LecturesWidget> {
               ),
               itemCount: lectures.length,
               shrinkWrap: true,
-              physics: const ScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               addAutomaticKeepAlives: true,
               itemBuilder: (context, index) {
                 return buildLectureItem(
@@ -59,9 +74,12 @@ class _LecturesWidgetState extends State<LecturesWidget> {
                     lectureNumber: lectures[index].sort ?? 1,
                     duration: lectures[index].duration ?? 0,
                     onTap: () {
-                      context
-                          .read<LectureBloc>()
-                          .add(SelectLectureEvent(lectureIndex: index));
+                      context.read<LectureBloc>().add(
+                            SelectLectureEvent(
+                              lectureIndex: index,
+                              courseId: widget.course.id ?? '',
+                            ),
+                          );
                     });
               },
             );
@@ -105,13 +123,14 @@ Widget buildNonLectureTabs(CourseOptions option, Course course) {
   }
 }
 
-Widget buildLectureItem(
-    {required int lectureNumber,
-    required String title,
-    required String subtitle,
-    bool isActive = false,
-    required VoidCallback onTap,
-    required int duration}) {
+Widget buildLectureItem({
+  required int lectureNumber,
+  required String title,
+  required String subtitle,
+  bool isActive = false,
+  required VoidCallback onTap,
+  required int duration,
+}) {
   return InkWell(
     onTap: onTap,
     child: Card(
@@ -135,13 +154,6 @@ Widget buildLectureItem(
                       color: isActive ? Colors.white : ColorUtility.black,
                     ),
                   ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.file_download_outlined,
-                        size: 20,
-                        color: isActive ? Colors.white : ColorUtility.black,
-                      ))
                 ],
               ),
             ),
@@ -175,7 +187,7 @@ Widget buildLectureItem(
                         Icons.play_circle_outline,
                         size: 40,
                         color: isActive ? Colors.white : ColorUtility.black,
-                      ))
+                      )),
                 ],
               ),
             ),
@@ -271,7 +283,7 @@ Widget buildMoreItem(String title) {
       children: [
         SizedBox(height: 12.h),
         textInApp(
-            text: 'Come soon...', fontSize: 14, color: Colors.grey.shade600),
+            text: 'Coming soon...', fontSize: 14, color: Colors.grey.shade600),
       ],
     ),
   );

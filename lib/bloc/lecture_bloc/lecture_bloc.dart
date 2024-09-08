@@ -33,7 +33,8 @@ class LectureBloc extends Bloc<LectureEvent, LectureState> {
             .map((doc) => Lecture.fromJson({'id': doc.id, ...doc.data()}))
             .toList();
 
-        final lastWatchedLectureId = await _getLastWatchedLectureId();
+        final lastWatchedLectureId =
+            await _getLastWatchedLectureId(event.courseId);
         final lastWatchedLectureIndex = lastWatchedLectureId != null
             ? lectures
                 .indexWhere((lecture) => lecture.id == lastWatchedLectureId)
@@ -60,7 +61,7 @@ class LectureBloc extends Bloc<LectureEvent, LectureState> {
       final selectedLectureUrl = selectedLecture.lectureUrl;
 
       if (selectedLecture.id != null) {
-        await _saveLastWatchedLecture(selectedLecture.id!);
+        await _saveLastWatchedLecture(selectedLecture.id!, event.courseId);
       }
 
       emit(LectureLoadedState(
@@ -71,7 +72,8 @@ class LectureBloc extends Bloc<LectureEvent, LectureState> {
     }
   }
 
-  Future<void> _saveLastWatchedLecture(String lectureId) async {
+  Future<void> _saveLastWatchedLecture(
+      String lectureId, String courseId) async {
     final userId = await _getUserId();
     if (userId == null) return;
 
@@ -79,6 +81,8 @@ class LectureBloc extends Bloc<LectureEvent, LectureState> {
       await FirebaseFirestore.instance
           .collection('last_watched_lecture')
           .doc(userId)
+          .collection('courses')
+          .doc(courseId)
           .set({
         'last_watched_lecture_id': lectureId,
         'timestamp': FieldValue.serverTimestamp(),
@@ -88,7 +92,7 @@ class LectureBloc extends Bloc<LectureEvent, LectureState> {
     }
   }
 
-  Future<String?> _getLastWatchedLectureId() async {
+  Future<String?> _getLastWatchedLectureId(String courseId) async {
     final userId = await _getUserId();
     if (userId == null) return null;
 
@@ -96,6 +100,8 @@ class LectureBloc extends Bloc<LectureEvent, LectureState> {
       final doc = await FirebaseFirestore.instance
           .collection('last_watched_lecture')
           .doc(userId)
+          .collection('courses')
+          .doc(courseId)
           .get();
 
       if (doc.exists && doc.data() != null) {

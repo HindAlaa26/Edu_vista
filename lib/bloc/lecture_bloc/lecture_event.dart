@@ -8,6 +8,7 @@ final class LoadLecturesEvent extends LectureEvent {
 
 final class SelectLectureEvent extends LectureEvent {
   final int lectureIndex;
+  final String courseId;
 
-  SelectLectureEvent({required this.lectureIndex});
+  SelectLectureEvent({required this.lectureIndex, required this.courseId});
 }

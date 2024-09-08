@@ -33,6 +33,9 @@ class _LectureScreenState extends State<LectureScreen>
   void initState() {
     super.initState();
     tabController = TabController(length: 4, vsync: this);
+    context
+        .read<LectureBloc>()
+        .add(LoadLecturesEvent(courseId: widget.course.id ?? ""));
   }
 
   @override
@@ -42,6 +45,7 @@ class _LectureScreenState extends State<LectureScreen>
   }
 
   bool isIndicatorColor = true;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
