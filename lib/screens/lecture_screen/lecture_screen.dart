@@ -74,10 +74,14 @@ class _LectureScreenState extends State<LectureScreen>
                     videoID == null || videoID!.isEmpty
                         ? Padding(
                             padding: const EdgeInsets.only(top: 100),
-                            child: SizedBox(
-                                width: ScreenUtil().screenWidth,
-                                child: textInApp(
-                                    text: "No video", color: Colors.white)),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                textInApp(
+                                    text: "No video", color: Colors.white),
+                              ],
+                            ),
                           )
                         : VideoWidget(
                             videoUrl: videoID!,
@@ -120,11 +124,17 @@ class _LectureScreenState extends State<LectureScreen>
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  textInApp(
-                                    text: widget.course.title ?? "Course Name",
-                                    color: const Color(0xff1D1B20),
+                                  Expanded(
+                                    flex: 2,
+                                    child: textInApp(
+                                      text:
+                                          widget.course.title ?? "Course Name",
+                                      color: const Color(0xff1D1B20),
+                                    ),
                                   ),
-                                  SizedBox(width: 50.w),
+                                  SizedBox(
+                                      width: 50
+                                          .w), // You can use SizedBox here for spacing.
                                   Expanded(
                                     child: defaultButton(
                                       text: "Add To Cart",
@@ -134,12 +144,13 @@ class _LectureScreenState extends State<LectureScreen>
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => CartScreen(),
+                                            builder: (context) =>
+                                                const CartScreen(),
                                           ),
                                         );
                                       },
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
