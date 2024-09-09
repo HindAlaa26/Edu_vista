@@ -123,7 +123,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           SizedBox(height: 16.h),
           Padding(
-            padding: const EdgeInsets.only(bottom: 20),
+            padding: const EdgeInsets.only(bottom: 50),
             child: textInApp(
               text: "Based on Your Search",
               fontSize: 18,
