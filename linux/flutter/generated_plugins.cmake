@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  animated_rating_stars
   url_launcher_linux
 )
 

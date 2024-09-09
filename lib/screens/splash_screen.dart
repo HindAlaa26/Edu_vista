@@ -5,7 +5,6 @@ import 'package:edu_vista/services/pref_service.dart';
 import 'package:edu_vista/utils/images_utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_loadingkit/flutter_animated_loadingkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -33,9 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(
               height: 100.h,
             ),
-            const AnimatedLoadingSpiralLines(
-              color: Colors.blueGrey,
-              baseRadius: 7,
+            const Padding(
+              padding: EdgeInsets.only(left: 100, right: 100),
+              child: LinearProgressIndicator(
+                color: Colors.blueGrey,
+              ),
             )
           ],
         ),

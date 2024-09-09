@@ -121,20 +121,16 @@ class _LectureScreenState extends State<LectureScreen>
                               padding: EdgeInsets.symmetric(
                                   horizontal: 16.w, vertical: 7.h),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    flex: 2,
                                     child: textInApp(
                                       text:
                                           widget.course.title ?? "Course Name",
                                       color: const Color(0xff1D1B20),
                                     ),
                                   ),
-                                  SizedBox(
-                                      width: 50
-                                          .w), // You can use SizedBox here for spacing.
+                                  SizedBox(width: 4.w),
                                   Expanded(
                                     child: defaultButton(
                                       text: "Add To Cart",

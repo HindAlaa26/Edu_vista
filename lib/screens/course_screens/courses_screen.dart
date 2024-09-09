@@ -89,25 +89,35 @@ class CoursesScreen extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.network(
-                      course.image ?? "",
-                      width: 157.84,
-                      height: 105.23,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return const CircularProgressIndicator(
-                          color: ColorUtility.secondary,
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) => const Icon(
-                        Icons.error,
-                        color: ColorUtility.main,
-                      ),
-                    ),
-                  ),
+                  course.image == null
+                      ? Container(
+                          height: 105.23.h,
+                          width: 157.84.w,
+                          decoration: const BoxDecoration(
+                              color: ColorUtility.grey,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.network(
+                            course.image ?? "",
+                            width: 157.84.w,
+                            height: 105.23.h,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return const CircularProgressIndicator(
+                                color: ColorUtility.secondary,
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(
+                              Icons.error,
+                              color: ColorUtility.main,
+                            ),
+                          ),
+                        ),
                   Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(

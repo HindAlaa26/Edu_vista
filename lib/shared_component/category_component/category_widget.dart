@@ -20,14 +20,13 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 40.h,
+        height: 70.h,
         child: FutureBuilder(
             future: futureCall,
             builder: (ctx, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child:
-                      CircularProgressIndicator(color: ColorUtility.secondary),
+                  child: CircularProgressIndicator(color: ColorUtility.main),
                 );
               }
 

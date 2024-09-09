@@ -1,4 +1,3 @@
-import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:edu_vista/screens/cart_screens/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +11,7 @@ import '../../screens/lecture_screen/lecture_screen.dart';
 import '../../utils/color_utility.dart';
 import '../default_button_component .dart';
 import '../default_text_component .dart';
+import '../rating_bar_widget.dart';
 
 class CustomCartTile extends StatefulWidget {
   final Course course;
@@ -111,20 +111,8 @@ class _CustomCartTileState extends State<CustomCartTile> {
                                         fontWeight: FontWeight.w600),
                                     SizedBox(width: 4.w),
                                     Expanded(
-                                      child: AnimatedRatingStars(
-                                        initialRating: widget.course.rating!,
-                                        filledColor: ColorUtility.main,
-                                        emptyColor: ColorUtility.grey,
-                                        onChanged: (double rating) {
-                                          print('Rating: $rating');
-                                        },
-                                        customFilledIcon: Icons.star,
-                                        customHalfFilledIcon: Icons.star_half,
-                                        customEmptyIcon: Icons.star_border,
-                                        starSize: 10.0,
-                                        readOnly: true,
-                                      ),
-                                    )
+                                        child: ratingBarWidget(
+                                            value: widget.course.rating!))
                                   ],
                                 ),
                                 SizedBox(height: 8.h),

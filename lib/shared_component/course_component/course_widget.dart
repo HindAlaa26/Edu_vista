@@ -1,11 +1,10 @@
-import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../models/course_model.dart';
 import '../../screens/lecture_screen/lecture_screen.dart';
 import '../../utils/color_utility.dart';
 import '../default_text_component .dart';
+import '../rating_bar_widget.dart';
 
 Widget courseWidget({
   required BuildContext context,
@@ -75,19 +74,7 @@ Widget courseWidget({
                   SizedBox(
                     width: 8.w,
                   ),
-                  AnimatedRatingStars(
-                    initialRating: courses[index].rating!,
-                    filledColor: ColorUtility.secondary,
-                    emptyColor: ColorUtility.grey,
-                    onChanged: (double rating) {
-                      print('Rating: $rating');
-                    },
-                    customFilledIcon: Icons.star,
-                    customHalfFilledIcon: Icons.star_half,
-                    customEmptyIcon: Icons.star_border,
-                    starSize: 11.0,
-                    readOnly: true,
-                  )
+                  ratingBarWidget(value: courses[index].rating!)
                 ],
               ),
               Flexible(
