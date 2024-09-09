@@ -9,6 +9,8 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
   CourseBloc() : super(CourseInitial()) {
     on<FetchCourses>(_onFetchSearchedCourses);
     on<FetchPayedCourses>(_onFetchPayedCourses);
+    on<SaveSearchedCourse>(_onSaveSearchedCourse);
+    on<FetchBasedOnYourSearchCourses>(_onFetchBasedOnYourSearchCourses);
   }
 
   Future<void> _onFetchSearchedCourses(
@@ -39,6 +41,46 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       }
     } catch (e) {
       emit(CourseSearchError(e.toString()));
+    }
+  }
+
+  Future<void> _onSaveSearchedCourse(
+      SaveSearchedCourse event, Emitter<CourseState> emit) async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .collection("searched_courses")
+          .doc(event.course.id)
+          .set(event.course.toJson());
+    } catch (e) {
+      print("Save Searched Course error ${e.toString()}");
+    }
+  }
+
+  Future<void> _onFetchBasedOnYourSearchCourses(
+      FetchBasedOnYourSearchCourses event, Emitter<CourseState> emit) async {
+    emit(BasedOnYourSearchLoading());
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      final fetchCourses = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .collection("searched_courses")
+          .get();
+
+      final courses = fetchCourses.docs
+          .map((doc) => Course.fromJson({'id': doc.id, ...doc.data()}))
+          .toList();
+
+      if (courses.isEmpty) {
+        emit(BasedOnYourSearchEmpty());
+      } else {
+        emit(BasedOnYourSearchLoaded(courses));
+      }
+    } catch (e) {
+      emit(BasedOnYourSearchError(e.toString()));
     }
   }
 
