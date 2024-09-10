@@ -133,7 +133,7 @@ Widget buildNonLectureTabs(CourseOptions option, Course course) {
       );
 
     case CourseOptions.more:
-      return buildMoreTab();
+      return buildMoreTab(course: course);
     default:
       return Text('Invalid option ${option.name}');
   }
@@ -347,29 +347,82 @@ Widget buildCertificateTab({
   );
 }
 
-Widget buildMoreTab() {
+Widget buildMoreTab({required Course course}) {
   return ListView(
     padding: const EdgeInsets.all(16),
     children: [
-      buildMoreItem('About Instructor'),
-      buildMoreItem('Course Resources'),
-      buildMoreItem('Share this Course'),
+      buildMoreItem(course: course),
     ],
   );
 }
 
-Widget buildMoreItem(String title) {
+Widget buildMoreItem({required Course course}) {
   return Card(
     color: Colors.grey[100],
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
     margin: const EdgeInsets.only(bottom: 15),
     child: ExpansionTile(
-      title: textInApp(text: title, fontSize: 15, fontWeight: FontWeight.w500),
+      title: textInApp(
+          text: "About Instructor", fontSize: 15, fontWeight: FontWeight.w500),
       trailing: const Icon(Icons.double_arrow),
       children: [
         SizedBox(height: 12.h),
-        textInApp(
-            text: 'Coming soon...', fontSize: 14, color: Colors.grey.shade600),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              textInApp(
+                  text: 'Instructor Name:',
+                  fontSize: 14,
+                  color: ColorUtility.main),
+              Padding(
+                padding: EdgeInsets.only(right: 80.w),
+                child: textInApp(
+                  text: '${course.instructor?.name}',
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              textInApp(
+                  text: 'Instructor graduation From :',
+                  fontSize: 14,
+                  color: ColorUtility.main),
+              Expanded(
+                child: textInApp(
+                  text: '${course.instructor?.graduationFrom}',
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              textInApp(
+                  text: 'Instructor year Of Experience :',
+                  fontSize: 14,
+                  color: ColorUtility.main),
+              Expanded(
+                child: textInApp(
+                  text: '${course.instructor?.yearOfExperience}',
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 12.h),
       ],
     ),
   );
