@@ -167,6 +167,7 @@ class _LectureScreenState extends State<LectureScreen>
                               labelColor: Colors.white,
                               indicatorColor: Colors.transparent,
                               isScrollable: true,
+                              dividerColor: Colors.white,
                               tabs: [
                                 _buildTab('Lecture', 0),
                                 _buildTab('Download', 1),
@@ -183,7 +184,7 @@ class _LectureScreenState extends State<LectureScreen>
                               height: 600.h,
                               child: TabBarView(
                                 controller: tabController,
-                                physics: const BouncingScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 children: [
                                   LecturesWidget(
                                     course: widget.course,

@@ -4,6 +4,7 @@ class Lecture {
   String? description;
   int? duration;
   String? lectureUrl;
+  String? lectureMaterial;
   int? sort;
   List<String>? watchedUsers;
 
@@ -14,9 +15,8 @@ class Lecture {
     duration = data['duration'];
     lectureUrl = data['lectureUrl'];
     sort = data['sort'];
+    lectureMaterial = data['lectureMaterial'];
     watchedUsers =
-    data['watchedUsers'] != null ? List.from(data['watchedUsers']) : null;
+        data['watchedUsers'] != null ? List.from(data['watchedUsers']) : null;
   }
-
-
 }

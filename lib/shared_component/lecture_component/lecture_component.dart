@@ -10,6 +10,7 @@ import '../../models/course_model.dart';
 import '../../utils/app_enum.dart';
 import '../../utils/color_utility.dart';
 import '../default_text_component .dart';
+import '../web_view.dart';
 
 class LecturesWidget extends StatefulWidget {
   final CourseOptions courseOption;
@@ -93,6 +94,29 @@ class _LecturesWidgetState extends State<LecturesWidget> {
             );
           }
         }
+        if (widget.courseOption == CourseOptions.download) {
+          if (state is LectureLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ColorUtility.secondary,
+              ),
+            );
+          } else if (state is LectureLoadedState) {
+            var lectures = state.lectures;
+            return buildDownloadItem(lectures: lectures);
+          } else if (state is LectureErrorState) {
+            return Center(
+              child: textInApp(text: state.error),
+            );
+          } else {
+            return Center(
+              child: textInApp(
+                  text: 'Download Section',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            );
+          }
+        }
 
         return buildNonLectureTabs(widget.courseOption, widget.course);
       },
@@ -102,14 +126,6 @@ class _LecturesWidgetState extends State<LecturesWidget> {
 
 Widget buildNonLectureTabs(CourseOptions option, Course course) {
   switch (option) {
-    case CourseOptions.download:
-      return Center(
-        child: textInApp(
-            text: 'Download Section',
-            fontSize: 18,
-            fontWeight: FontWeight.bold),
-      );
-
     case CourseOptions.certificate:
       return buildCertificateTab(
         instructorName: course.instructor?.name ?? "instructor Name",
@@ -198,6 +214,65 @@ Widget buildLectureItem({
   );
 }
 
+Widget buildDownloadItem({required lectures}) {
+  return GridView.builder(
+    padding: const EdgeInsets.all(10),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      mainAxisSpacing: 9,
+      crossAxisSpacing: 7,
+      childAspectRatio: 1,
+    ),
+    itemCount: lectures.length,
+    shrinkWrap: true,
+    physics: const AlwaysScrollableScrollPhysics(),
+    addAutomaticKeepAlives: true,
+    itemBuilder: (context, index) {
+      return InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ShowWebView(
+                  lectureNumber: lectures[index].sort!,
+                  url: lectures[index].lectureMaterial!,
+                ),
+              ));
+        },
+        child: Container(
+          height: 100.h,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: ColorUtility.secondary,
+              gradient: const LinearGradient(colors: [
+                ColorUtility.secondary,
+                Colors.brown,
+              ])),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              textInApp(
+                  text: 'Lecture ${lectures[index].sort}',
+                  color: Colors.white,
+                  fontSize: 15),
+              SizedBox(
+                height: 20.h,
+              ),
+              textInApp(
+                  text: lectures[index].title ?? "Lecture title",
+                  color: Colors.white,
+                  fontSize: 14),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
 Widget buildCertificateTab({
   required String instructorName,
   required String courseTitle,
@@ -205,58 +280,69 @@ Widget buildCertificateTab({
   return SingleChildScrollView(
     child: Center(
       child: Container(
-        width: 300.w,
-        height: 400.h,
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: ColorUtility.grey,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 4),
-              blurRadius: 8,
+          width: 300.w,
+          height: 400.h,
+          margin: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: ColorUtility.grey,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                offset: Offset(0, 4),
+                blurRadius: 8,
+              ),
+            ],
+          ),
+          child: Stack(children: [
+            Positioned(
+              right: 0,
+              top: 0,
+              child: Image.asset(
+                "assets/images/certificate_circle.png",
+                fit: BoxFit.cover,
+              ),
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            textInApp(
-                text: "Certificate of Completion",
-                fontSize: 22,
-                fontWeight: FontWeight.bold),
-            SizedBox(height: 16.h),
-            textInApp(text: "This is to certify that", fontSize: 16),
-            SizedBox(height: 8.h),
-            textInApp(
-                text: FirebaseAuth.instance.currentUser?.displayName ??
-                    "Student Name",
-                fontSize: 18,
-                color: ColorUtility.secondary,
-                fontWeight: FontWeight.bold),
-            SizedBox(height: 16.h),
-            textInApp(
-                text: "has successfully completed the course: ", fontSize: 16),
-            SizedBox(height: 10.h),
-            textInApp(
-                text: courseTitle, fontSize: 16, color: ColorUtility.secondary),
-            SizedBox(height: 24.h),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                textInApp(text: "Instructor Name :", fontSize: 16),
-                SizedBox(width: 10.w),
                 textInApp(
-                    text: instructorName,
+                    text: "Certificate of Completion",
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+                SizedBox(height: 16.h),
+                textInApp(text: "This is to certify that", fontSize: 16),
+                SizedBox(height: 8.h),
+                textInApp(
+                    text: FirebaseAuth.instance.currentUser?.displayName ??
+                        "Student Name",
+                    fontSize: 18,
+                    color: ColorUtility.secondary,
+                    fontWeight: FontWeight.bold),
+                SizedBox(height: 16.h),
+                textInApp(
+                    text: "has successfully completed the course: ",
+                    fontSize: 16),
+                SizedBox(height: 10.h),
+                textInApp(
+                    text: courseTitle,
                     fontSize: 16,
                     color: ColorUtility.secondary),
+                SizedBox(height: 24.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textInApp(text: "Instructor Name :", fontSize: 16),
+                    SizedBox(width: 10.w),
+                    textInApp(
+                        text: instructorName,
+                        fontSize: 16,
+                        color: ColorUtility.secondary),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-      ),
+          ])),
     ),
   );
 }
