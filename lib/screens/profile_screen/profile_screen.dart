@@ -31,8 +31,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Icons.settings,
     Icons.info,
   ];
+
   var nameController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+  Color? textColor;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTextColor();
+  }
+
+  Future<void> _loadTextColor() async {
+    int? savedColorValue = await PreferencesService.getTextColor();
+    if (savedColorValue != null) {
+      setState(() {
+        textColor = Color(savedColorValue);
+      });
+    }
+  }
+
+  Future<void> _saveTextColor(Color color) async {
+    setState(() {
+      textColor = color;
+    });
+    await PreferencesService.saveTextColor(color.value);
+  }
+
   @override
   void dispose() {
     nameController.dispose();
@@ -97,7 +122,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       SizedBox(height: 10.h),
-                      textInApp(text: "${user.name}"),
+                      textInApp(
+                          text: "${user.name}",
+                          color: textColor ?? ColorUtility.black),
                       Text('${user.email}'),
                       SizedBox(height: 50.h),
                       SingleChildScrollView(
@@ -167,7 +194,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     )
                                   else if (index == 1)
-                                    textInApp(text: profileData[index])
+                                    Padding(
+                                      padding: const EdgeInsets.all(28.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          textInApp(text: "Choose name color:"),
+                                          SizedBox(height: 28.0.h),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  _saveTextColor(
+                                                      ColorUtility.main);
+                                                },
+                                                child: const CircleAvatar(
+                                                  backgroundColor:
+                                                      ColorUtility.main,
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  _saveTextColor(
+                                                      ColorUtility.secondary);
+                                                },
+                                                child: const CircleAvatar(
+                                                  backgroundColor:
+                                                      ColorUtility.secondary,
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  _saveTextColor(
+                                                      ColorUtility.black);
+                                                },
+                                                child: const CircleAvatar(
+                                                  backgroundColor:
+                                                      ColorUtility.black,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )
                                   else if (index == 2)
                                     Padding(
                                       padding: const EdgeInsets.all(18.0),

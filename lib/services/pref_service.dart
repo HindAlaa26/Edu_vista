@@ -21,4 +21,16 @@ abstract class PreferencesService {
   static bool get isLogin => prefs!.getBool('isLogin') ?? false;
 
   static set isLogin(bool value) => prefs!.setBool('isLogin', value);
+
+  static const String _textColorKey = 'text_color';
+
+  static Future<void> saveTextColor(int colorValue) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_textColorKey, colorValue);
+  }
+
+  static Future<int?> getTextColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_textColorKey);
+  }
 }

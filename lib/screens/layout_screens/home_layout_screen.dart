@@ -3,10 +3,8 @@ import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../cubit/auth_cubit.dart';
 import '../../models/user_model.dart';
-import '../chat_screens/chat_screen.dart';
 import '../course_screens/courses_screen.dart';
 import '../home_screen/home_screen.dart';
 import '../profile_screen/profile_screen.dart';
@@ -25,8 +23,7 @@ class _HomeLayoutScreenState extends State<HomeLayoutScreen> {
     HomeScreen(),
     CoursesScreen(),
     SearchScreen(),
-    ChatScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -39,7 +36,6 @@ class _HomeLayoutScreenState extends State<HomeLayoutScreen> {
           builder: (context, state) {
             if (state is UserLoaded) {
               UserModel user = state.user;
-
               return BottomNavigationBar(
                 items: [
                   BottomNavigationBarItem(
@@ -91,22 +87,6 @@ class _HomeLayoutScreenState extends State<HomeLayoutScreen> {
                         ],
                       )),
                   BottomNavigationBarItem(
-                      icon: const Icon(Icons.chat),
-                      label: "",
-                      activeIcon: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.chat),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 50.w),
-                            child: const Divider(
-                              thickness: 2,
-                              color: ColorUtility.secondary,
-                            ),
-                          )
-                        ],
-                      )),
-                  BottomNavigationBarItem(
                       icon: CircleAvatar(
                         backgroundImage: NetworkImage(user.image ?? ""),
                       ),
@@ -115,6 +95,7 @@ class _HomeLayoutScreenState extends State<HomeLayoutScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
+                            backgroundColor: ColorUtility.main,
                             backgroundImage: NetworkImage(user.image ?? ""),
                           ),
                           Padding(
