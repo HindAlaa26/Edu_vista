@@ -58,8 +58,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       final PaymobResponse? response = await PaymobPayment.instance.pay(
         context: event.context,
         currency: "EGP",
-        amountInCents:
-            "${(event.course.price! * 30).toInt()}",
+        amountInCents: "${(event.course.price! * 30).toInt()}",
       );
 
       if (response != null && response.success) {
@@ -70,18 +69,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         final cartRef =
             _fireStore.collection('users').doc(userId).collection('cart');
 
-        // Add the course to payed_courses
         final payedDocRef = payedCoursesRef.doc(event.course.id);
         await payedDocRef.set(event.course.toJson());
 
-        // Remove the course from cart
         final cartDocRef = cartRef.doc(event.course.id);
         await cartDocRef.delete();
 
-        // Remove the course from the local list
         _courses.remove(event.course);
 
-        // Emit the updated state
         emit(CartLoaded(_courses, _calculateTotalPrice()));
 
         if (!event.context.mounted) return;

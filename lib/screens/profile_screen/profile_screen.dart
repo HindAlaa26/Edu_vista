@@ -104,7 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             bottom: 0,
                             right: 20,
                             child: CircleAvatar(
-                              backgroundColor: Colors.green,
+                              backgroundColor: ColorUtility.main,
                               child: IconButton(
                                 onPressed: () async {
                                   await context
