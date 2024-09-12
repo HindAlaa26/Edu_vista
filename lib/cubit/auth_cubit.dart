@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/user_model.dart';
+import '../services/pref_service.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -227,7 +228,8 @@ class AuthCubit extends Cubit<AuthState> {
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({"image": downloadUrl});
         print('>>>>>Image uploaded: $downloadUrl');
-
+        PreferencesService.profileImage = downloadUrl;
+        print("........................${PreferencesService.profileImage}");
         fetchUserData();
       } else {
         emit(UserError('Image upload failed.'));

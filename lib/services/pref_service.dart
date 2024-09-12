@@ -33,4 +33,11 @@ abstract class PreferencesService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(_textColorKey);
   }
+
+  static String get profileImage =>
+      prefs!.getString('profileImage') ??
+      "https://icons.veryicon.com/png/o/system/crm-android-app-icon/app-icon-person.png";
+
+  static set profileImage(String value) =>
+      prefs!.setString('profileImage', value);
 }

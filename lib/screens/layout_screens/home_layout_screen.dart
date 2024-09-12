@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../cubit/auth_cubit.dart';
 import '../../models/user_model.dart';
+import '../../services/pref_service.dart';
 import '../course_screens/courses_screen.dart';
 import '../home_screen/home_screen.dart';
 import '../profile_screen/profile_screen.dart';
@@ -88,7 +89,8 @@ class _HomeLayoutScreenState extends State<HomeLayoutScreen> {
                       )),
                   BottomNavigationBarItem(
                       icon: CircleAvatar(
-                        backgroundImage: NetworkImage(user.image ?? ""),
+                        backgroundImage:
+                            NetworkImage(PreferencesService.profileImage ?? ""),
                       ),
                       label: "",
                       activeIcon: Column(
@@ -96,7 +98,8 @@ class _HomeLayoutScreenState extends State<HomeLayoutScreen> {
                         children: [
                           CircleAvatar(
                             backgroundColor: ColorUtility.main,
-                            backgroundImage: NetworkImage(user.image ?? ""),
+                            backgroundImage: NetworkImage(
+                                PreferencesService.profileImage ?? ""),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 50.w),
