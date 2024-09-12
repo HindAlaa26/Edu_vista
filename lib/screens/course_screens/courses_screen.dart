@@ -118,36 +118,38 @@ class CoursesScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                  Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        textInApp(
-                            text: course.title ?? "No Title",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          children: [
-                            const Icon(Icons.perm_identity_sharp),
-                            textInApp(
-                                text:
-                                    course.instructor?.name ?? "No Instructor",
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        textInApp(
-                            text: "Start your course",
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12),
-                      ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          textInApp(
+                              text: course.title ?? "No Title",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.perm_identity_sharp),
+                              textInApp(
+                                  text: course.instructor?.name ??
+                                      "No Instructor",
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          textInApp(
+                              text: "Start your course",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12),
+                        ],
+                      ),
                     ),
                   )
                 ],
