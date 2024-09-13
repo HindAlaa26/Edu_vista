@@ -114,98 +114,104 @@ class _LectureScreenState extends State<LectureScreen>
                             topRight: Radius.circular(20),
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w, vertical: 7.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: textInApp(
-                                      text:
-                                          widget.course.title ?? "Course Name",
-                                      color: const Color(0xff1D1B20),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w, vertical: 7.h),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: textInApp(
+                                        text: widget.course.title ??
+                                            "Course Name",
+                                        color: const Color(0xff1D1B20),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 4.w),
-                                  Expanded(
-                                    child: defaultButton(
-                                      text: "Add To Cart",
-                                      onTap: () {
-                                        context.read<CartBloc>().add(
-                                            AddCourseToCart(widget.course));
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CartScreen(),
-                                          ),
-                                        );
-                                      },
+                                    SizedBox(width: 4.w),
+                                    Expanded(
+                                      child: defaultButton(
+                                        text: "Add To Cart",
+                                        onTap: () {
+                                          context.read<CartBloc>().add(
+                                              AddCourseToCart(widget.course));
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const CartScreen(),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                              child: textInApp(
-                                text: widget.course.instructor?.name ??
-                                    "Instructor Name",
-                                color: const Color(0xff1D1B20),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 16.0.w),
+                                child: textInApp(
+                                  text: widget.course.instructor?.name ??
+                                      "Instructor Name",
+                                  color: const Color(0xff1D1B20),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 10.h),
-                            TabBar(
-                              controller: tabController,
-                              unselectedLabelColor: ColorUtility.grey,
-                              labelColor: Colors.white,
-                              indicatorColor: Colors.transparent,
-                              isScrollable: true,
-                              dividerColor: Colors.white,
-                              tabs: [
-                                _buildTab('Lecture', 0),
-                                _buildTab('Download', 1),
-                                _buildTab('Certificate', 2),
-                                _buildTab('More', 3),
-                              ],
-                              onTap: (index) {
-                                setState(() {
-                                  tabController.index = index;
-                                });
-                              },
-                            ),
-                            SizedBox(
-                              height: 600.h,
-                              child: TabBarView(
+                              SizedBox(height: 10.h),
+                              TabBar(
                                 controller: tabController,
-                                physics: const NeverScrollableScrollPhysics(),
-                                children: [
-                                  LecturesWidget(
-                                    course: widget.course,
-                                    courseOption: CourseOptions.lecture,
-                                  ),
-                                  LecturesWidget(
-                                    course: widget.course,
-                                    courseOption: CourseOptions.download,
-                                  ),
-                                  LecturesWidget(
-                                    course: widget.course,
-                                    courseOption: CourseOptions.certificate,
-                                  ),
-                                  LecturesWidget(
-                                    course: widget.course,
-                                    courseOption: CourseOptions.more,
-                                  ),
+                                unselectedLabelColor: ColorUtility.grey,
+                                labelColor: Colors.white,
+                                indicatorColor: Colors.transparent,
+                                isScrollable: true,
+                                dividerColor: Colors.white,
+                                tabs: [
+                                  _buildTab('Lecture', 0),
+                                  _buildTab('Download', 1),
+                                  _buildTab('Certificate', 2),
+                                  _buildTab('More', 3),
                                 ],
+                                onTap: (index) {
+                                  setState(() {
+                                    tabController.index = index;
+                                  });
+                                },
                               ),
-                            ),
-                          ],
+                              SingleChildScrollView(
+                                child: SizedBox(
+                                  height: 700.h,
+                                  child: TabBarView(
+                                    controller: tabController,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    children: [
+                                      LecturesWidget(
+                                        course: widget.course,
+                                        courseOption: CourseOptions.lecture,
+                                      ),
+                                      LecturesWidget(
+                                        course: widget.course,
+                                        courseOption: CourseOptions.download,
+                                      ),
+                                      LecturesWidget(
+                                        course: widget.course,
+                                        courseOption: CourseOptions.certificate,
+                                      ),
+                                      LecturesWidget(
+                                        course: widget.course,
+                                        courseOption: CourseOptions.more,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
