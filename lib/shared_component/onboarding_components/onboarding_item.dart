@@ -1,4 +1,4 @@
-import 'package:edu_vista/shared_component/default_text_component .dart';
+import 'package:edu_vista/shared_component/default_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

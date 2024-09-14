@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'default_text_component .dart';
+import 'default_text.dart';
 
 class LabelWidget extends StatelessWidget {
   final String name;

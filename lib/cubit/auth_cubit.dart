@@ -7,6 +7,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/user_model.dart';
 import '../services/pref_service.dart';
+import '../shared_component/default_text.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -32,26 +33,33 @@ class AuthCubit extends Cubit<AuthState> {
       if (!context.mounted) return false;
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No user found for that email.'),
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: textInApp(
+                text: 'No user found for that email.', color: Colors.white),
           ),
         );
       } else if (e.code == 'wrong-password') {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Wrong password provided for that user.'),
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: textInApp(
+                text: 'Wrong password provided for that user.',
+                color: Colors.white),
           ),
         );
       } else if (e.code == 'user-disabled') {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('User Disabled'),
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: textInApp(text: 'User Disabled', color: Colors.white),
           ),
         );
       } else if (e.code == 'invalid-credential') {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invalid Credential'),
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: textInApp(text: 'Invalid Credential', color: Colors.white),
           ),
         );
       }
@@ -59,8 +67,9 @@ class AuthCubit extends Cubit<AuthState> {
       if (!context.mounted) return false;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Something went wrong'),
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: textInApp(text: 'Something went wrong', color: Colors.white),
         ),
       );
     }
@@ -81,8 +90,6 @@ class AuthCubit extends Cubit<AuthState> {
       );
       if (credentials.user != null) {
         credentials.user!.updateDisplayName(nameController.text);
-        // credentials.user!.updatePhotoURL(
-        //     "https://icons.veryicon.com/png/o/system/crm-android-app-icon/app-icon-person.png");
         userCreate(
           email: emailController.text,
           name: nameController.text,
@@ -90,8 +97,10 @@ class AuthCubit extends Cubit<AuthState> {
         );
         if (!context.mounted) return false;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Account created successfully'),
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: textInApp(
+                text: 'Account created successfully', color: Colors.white),
           ),
         );
         return true;
@@ -100,14 +109,20 @@ class AuthCubit extends Cubit<AuthState> {
       if (!context.mounted) return false;
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('The password provided is too weak.'),
+          SnackBar(
+            backgroundColor: Colors.orange,
+            content: textInApp(
+                text: 'The password provided is too weak.',
+                color: Colors.white),
           ),
         );
       } else if (e.code == 'email-already-in-use') {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('The account already exists for that email.'),
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: textInApp(
+                text: 'The account already exists for that email.',
+                color: Colors.white),
           ),
         );
       }
@@ -115,7 +130,8 @@ class AuthCubit extends Cubit<AuthState> {
       if (!context.mounted) return false;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Sign up Exception $e'),
+          backgroundColor: Colors.red,
+          content: textInApp(text: 'Sign up Exception $e', color: Colors.white),
         ),
       );
     }
@@ -130,9 +146,12 @@ class AuthCubit extends Cubit<AuthState> {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: emailController.text,
       );
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password reset email sent.'),
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: textInApp(
+              text: 'Password reset email sent.', color: Colors.white),
         ),
       );
       return true;
@@ -140,7 +159,10 @@ class AuthCubit extends Cubit<AuthState> {
       if (!context.mounted) return false;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to send reset email: ${e.message}'),
+          backgroundColor: Colors.red,
+          content: textInApp(
+              text: 'Failed to send reset email: ${e.message}',
+              color: Colors.white),
         ),
       );
       return false;
@@ -148,7 +170,8 @@ class AuthCubit extends Cubit<AuthState> {
       if (!context.mounted) return false;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Unexpected error: $e'),
+          backgroundColor: Colors.red,
+          content: textInApp(text: 'Unexpected error: $e', color: Colors.white),
         ),
       );
       return false;
@@ -227,9 +250,7 @@ class AuthCubit extends Cubit<AuthState> {
             .collection("users")
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({"image": downloadUrl});
-        print('>>>>>Image uploaded: $downloadUrl');
         PreferencesService.profileImage = downloadUrl;
-        print("........................${PreferencesService.profileImage}");
         fetchUserData();
       } else {
         emit(UserError('Image upload failed.'));
@@ -262,15 +283,19 @@ class AuthCubit extends Cubit<AuthState> {
       await FirebaseAuth.instance.currentUser?.delete();
       if (!context.mounted) return false;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Logged out successfully'),
+        SnackBar(
+          backgroundColor: Colors.green,
+          content:
+              textInApp(text: 'Logged out successfully', color: Colors.white),
         ),
       );
       return true;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error logging out: $e'),
+          backgroundColor: Colors.red,
+          content:
+              textInApp(text: 'Error logging out: $e', color: Colors.white),
         ),
       );
       return false;

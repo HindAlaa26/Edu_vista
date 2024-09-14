@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/cart_bloc/cart_bloc.dart';
 import '../../bloc/cart_bloc/cart_state.dart';
-import '../../shared_component/cart_component/custom_cart_component.dart';
-import '../../shared_component/default_text_component .dart';
+import '../../shared_component/cart_component/custom_cart.dart';
+import '../../shared_component/default_text.dart';
 import '../../utils/color_utility.dart';
 
 class CheckOutScreen extends StatelessWidget {

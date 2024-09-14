@@ -1,11 +1,10 @@
 import 'package:edu_vista/screens/auth_screens/login_screen.dart';
 import 'package:edu_vista/screens/auth_screens/sign_up_screen.dart';
-import 'package:edu_vista/shared_component/default_button_component .dart';
-import 'package:edu_vista/shared_component/default_text_component .dart';
+import 'package:edu_vista/shared_component/default_button.dart';
+import 'package:edu_vista/shared_component/default_text.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../screens/auth_screens/reset_password_screen.dart';
 
 class AuthTemplate extends StatefulWidget {
@@ -189,7 +188,7 @@ class _AuthTemplateState extends State<AuthTemplate> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                isLogin ? SignUpScreen() : LoginScreen(),
+                                isLogin ? SignUpScreen() : const LoginScreen(),
                           ));
                     },
                     child: textInApp(

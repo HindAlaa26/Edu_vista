@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-import 'default_text_component .dart';
+import 'default_text.dart';
 
 class ShowWebView extends StatefulWidget {
   final String url;

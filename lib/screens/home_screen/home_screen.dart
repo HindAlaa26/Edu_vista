@@ -1,12 +1,12 @@
 import 'package:edu_vista/screens/course_screens/see_all_courses_screen.dart';
-import 'package:edu_vista/shared_component/default_text_component%20.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../shared_component/category_component/category_widget.dart';
 import '../../shared_component/course_component/course_component.dart';
-import '../../shared_component/home_label_shared_component.dart';
+import '../../shared_component/default_text.dart';
+import '../../shared_component/home_label_widget.dart';
 import '../../shared_component/shopping_icon_widget.dart';
 import '../category_screens/see_all_category_screen.dart';
 
@@ -22,15 +22,18 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: const SizedBox(),
         elevation: 0,
         backgroundColor: Colors.white,
         title: Row(
           children: [
             textInApp(text: "Welcome"),
-            SizedBox(width: 8.w),
-            textInApp(
-                text: "${FirebaseAuth.instance.currentUser?.displayName}",
-                color: ColorUtility.main),
+            Expanded(
+              flex: 2,
+              child: textInApp(
+                  text: "${FirebaseAuth.instance.currentUser?.displayName}",
+                  color: ColorUtility.main),
+            ),
           ],
         ),
         actions: [shoppingIcon()],

@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import '../../models/category_model.dart';
 import '../../models/course_model.dart';
-import '../../shared_component/course_component/course_widget.dart';
-import '../../shared_component/default_text_component .dart';
+import '../../shared_component/course_component/course_component.dart';
+import '../../shared_component/default_text.dart';
 import '../../utils/color_utility.dart';
 
 class CategoryScreen extends StatefulWidget {
   final Category category;
-  CategoryScreen({super.key, required this.category});
+  const CategoryScreen({super.key, required this.category});
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
@@ -31,9 +30,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         child: FutureBuilder(
           future: FirebaseFirestore.instance
               .collection('courses')
-              .where('category.id',
-                  isEqualTo:
-                      widget.category.id) // Updated query to check nested field
+              .where('category.id', isEqualTo: widget.category.id)
               .get(),
           builder: (ctx, courseSnapshot) {
             if (courseSnapshot.connectionState == ConnectionState.waiting) {

@@ -1,4 +1,3 @@
-import 'package:edu_vista/shared_component/default_text_component%20.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../bloc/cart_bloc/cart_bloc.dart';
 import '../../bloc/cart_bloc/cart_event.dart';
 import '../../models/course_model.dart';
+import '../../shared_component/default_text.dart';
 
 class PaymentScreen extends StatefulWidget {
   final price;

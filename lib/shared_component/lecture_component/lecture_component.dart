@@ -3,13 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../bloc/lecture_bloc/lecture_bloc.dart';
 import '../../bloc/lecture_bloc/lecture_state.dart';
 import '../../models/course_model.dart';
 import '../../utils/app_enum.dart';
 import '../../utils/color_utility.dart';
-import '../default_text_component .dart';
+import '../default_text.dart';
 import '../web_view.dart';
 
 class LecturesWidget extends StatefulWidget {
@@ -90,7 +89,7 @@ class _LecturesWidgetState extends State<LecturesWidget> {
             );
           } else {
             return Center(
-              child: textInApp(text: 'No Lectures found'),
+              child: textInApp(text: 'No Lectures found come soon...'),
             );
           }
         }

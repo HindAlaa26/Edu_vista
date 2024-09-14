@@ -11,14 +11,14 @@ import 'package:edu_vista/bloc/cart_bloc/cart_bloc.dart';
 import 'package:edu_vista/bloc/cart_bloc/cart_event.dart';
 import 'package:edu_vista/screens/cart_screens/cart_screen.dart';
 import 'package:edu_vista/utils/color_utility.dart';
-import '../../shared_component/default_button_component .dart';
-import '../../shared_component/default_text_component .dart';
+import '../../shared_component/default_button.dart';
+import '../../shared_component/default_text.dart';
 import '../../utils/app_enum.dart';
 
 class LectureScreen extends StatefulWidget {
   final Course course;
 
-  LectureScreen({required this.course});
+  const LectureScreen({super.key, required this.course});
 
   @override
   _LectureScreenState createState() => _LectureScreenState();

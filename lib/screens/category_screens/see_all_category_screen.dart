@@ -3,11 +3,10 @@ import 'package:edu_vista/utils/color_utility.dart';
 import 'package:expansion_tile_list/expansion_tile_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../models/category_model.dart';
 import '../../models/course_model.dart';
-import '../../shared_component/course_component/course_widget.dart';
-import '../../shared_component/default_text_component .dart';
+import '../../shared_component/course_component/course_component.dart';
+import '../../shared_component/default_text.dart';
 
 class SeeAllCategoryScreen extends StatefulWidget {
   const SeeAllCategoryScreen({super.key});
@@ -60,7 +59,6 @@ class _SeeAllCategoryScreenState extends State<SeeAllCategoryScreen> {
             );
           }
 
-          // Convert Firestore documents to a list of Category objects
           var categories = List<Category>.from(
             snapshot.data?.docs.map((e) {
                   var category = Category.fromJson({'id': e.id, ...e.data()});
@@ -91,9 +89,7 @@ class _SeeAllCategoryScreenState extends State<SeeAllCategoryScreen> {
                     FutureBuilder(
                       future: FirebaseFirestore.instance
                           .collection('courses')
-                          .where('category.id',
-                              isEqualTo: categories[index]
-                                  .id) // Updated query to check nested field
+                          .where('category.id', isEqualTo: categories[index].id)
                           .get(),
                       builder: (ctx, courseSnapshot) {
                         if (courseSnapshot.connectionState ==

@@ -1,11 +1,11 @@
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/screens/auth_screens/login_screen.dart';
-import 'package:edu_vista/shared_component/default_button_component .dart';
-import 'package:edu_vista/shared_component/default_text_component .dart';
+import 'package:edu_vista/shared_component/default_button.dart';
+import 'package:edu_vista/shared_component/default_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../shared_component/custom_textFormField_component .dart';
+import '../../shared_component/custom_textFormField.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -16,12 +16,9 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var confirmPasswordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  int currentPage = 0;
-  var pageController = PageController(initialPage: 0);
+
 
   @override
   void initState() {
@@ -31,22 +28,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   void dispose() {
     emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    pageController.dispose();
     super.dispose();
   }
 
   Future<void> _sendResetEmail() async {
-    bool result = await context.read<AuthCubit>().sendPasswordResetEmail(
+    await context.read<AuthCubit>().sendPasswordResetEmail(
         context: context, emailController: emailController);
-
-    // if (result) {
-    //   pageController.nextPage(
-    //     duration: const Duration(seconds: 2),
-    //     curve: Curves.linear,
-    //   );
-    // }
   }
 
   @override
@@ -63,40 +50,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 textInApp(text: "Reset Password"),
                 SizedBox(height: 40.h),
                 Expanded(
-                  child: PageView(
-                    controller: pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    onPageChanged: (value) {
-                      setState(() {
-                        currentPage = value;
-                      });
-                    },
-                    children: [
-                      DefaultTextFormField(
-                        controller: emailController,
-                        validatorText: 'Email',
-                        label: 'Email',
-                        hintText: "demo@mail.com",
-                      ),
-                      Column(
-                        children: [
-                          DefaultTextFormField(
-                            controller: passwordController,
-                            validatorText: 'Password',
-                            label: 'Password',
-                            hintText: "********",
-                            isPassword: true,
-                          ),
-                          DefaultTextFormField(
-                            controller: confirmPasswordController,
-                            validatorText: 'Confirm Password',
-                            label: 'Confirm Password',
-                            hintText: "********",
-                            isPassword: true,
-                          ),
-                        ],
-                      ),
-                    ],
+                  child: DefaultTextFormField(
+                    controller: emailController,
+                    validatorText: 'Email',
+                    label: 'Email',
+                    hintText: "demo@mail.com",
                   ),
                 ),
                 SizedBox(height: 50.h),
@@ -106,16 +64,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     text: "SUBMIT",
                     onTap: () async {
                       if (formKey.currentState?.validate() ?? false) {
-                        if (pageController.page == 0) {
-                          await _sendResetEmail();
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
-                              ));
-                        } else {
-                          //go to the next page
-                        }
+                        await _sendResetEmail();
+                        if (!context.mounted) return;
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ));
                       }
                     },
                   ),

@@ -1,5 +1,4 @@
 import 'package:edu_vista/services/pref_service.dart';
-import 'package:edu_vista/shared_component/default_button_component%20.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
 import '../../models/user_model.dart';
-import '../../shared_component/custom_textFormField_component .dart';
-import '../../shared_component/default_text_component .dart';
+import '../../shared_component/custom_textFormField.dart';
+import '../../shared_component/default_button.dart';
+import '../../shared_component/default_text.dart';
 import '../../shared_component/shopping_icon_widget.dart';
 import '../auth_screens/login_screen.dart';
 
@@ -68,6 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const SizedBox(),
         title: textInApp(text: 'Profile'),
         centerTitle: true,
         actions: [shoppingIcon()],
@@ -95,6 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           CircleAvatar(
                             radius: 100,
+                            backgroundColor: ColorUtility.scaffoldBackground,
                             backgroundImage: user.image!.isNotEmpty
                                 ? NetworkImage(user.image ?? "")
                                 : const NetworkImage(
@@ -246,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       padding: const EdgeInsets.all(18.0),
                                       child: textInApp(
                                           text:
-                                              " Edu Vista application is a versatile mobile application that starts by allowing users to securely log in or reset their password via email if forgotten. Once logged in, users can explore a diverse range of paid courses, view lecture content, and manage their profile details such as name and image. The app features a comprehensive catalog of courses, which includes options to search for specific topics and see trending courses. Users can view both their purchased courses and available courses, add courses to their cart, and complete transactions securely via Paymob. Additionally, users have the option to delete their accounts if needed, ensuring a personalized and flexible learning experience. s"),
+                                              " Edu Vista application is a versatile mobile application that starts by allowing users to securely log in or reset their password via email if forgotten. Once logged in, users can explore a diverse range of paid courses, view lecture content, and manage their profile details such as name and image. The app features a comprehensive catalog of courses, which includes options to search for specific topics and see trending courses. Users can view both their purchased courses and available courses, add courses to their cart, and complete transactions securely via Paymob. Additionally, users have the option to delete their accounts if needed, ensuring a personalized and flexible learning experience."),
                                     )
                                 ],
                               ),
@@ -262,7 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
+                                builder: (context) => const LoginScreen(),
                               ),
                             );
                           },
@@ -286,11 +288,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 .read<AuthCubit>()
                                 .deleteUser(context);
                             if (result) {
+                              PreferencesService.isLogin = false;
+                              PreferencesService.isOnBoardingSeen = false;
                               if (!context.mounted) return;
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
+                                  builder: (context) => const LoginScreen(),
                                 ),
                               );
                             }

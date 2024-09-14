@@ -2,15 +2,14 @@ import 'package:edu_vista/screens/cart_screens/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../bloc/cart_bloc/cart_bloc.dart';
 import '../../bloc/cart_bloc/cart_event.dart';
 import '../../models/course_model.dart';
 import '../../screens/cart_screens/check_out_screen.dart';
 import '../../screens/lecture_screen/lecture_screen.dart';
 import '../../utils/color_utility.dart';
-import '../default_button_component .dart';
-import '../default_text_component .dart';
+import '../default_button.dart';
+import '../default_text.dart';
 import '../rating_bar_widget.dart';
 
 class CustomCartTile extends StatefulWidget {
@@ -95,11 +94,13 @@ class _CustomCartTileState extends State<CustomCartTile> {
                                       size: 13,
                                     ),
                                     SizedBox(width: 10.w),
-                                    textInApp(
-                                        text:
-                                            "${widget.course.instructor?.name}",
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400),
+                                    Expanded(
+                                      child: textInApp(
+                                          text:
+                                              "${widget.course.instructor?.name}",
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(height: 4.h),

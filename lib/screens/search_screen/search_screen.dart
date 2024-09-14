@@ -8,12 +8,12 @@ import '../../bloc/course_bloc/course_bloc.dart';
 import '../../bloc/course_bloc/course_event.dart';
 import '../../bloc/course_bloc/course_state.dart';
 import '../../shared_component/course_component/course_title_component.dart';
-import '../../shared_component/default_text_component .dart';
+import '../../shared_component/default_text.dart';
 import '../../shared_component/shopping_icon_widget.dart';
 import '../lecture_screen/lecture_screen.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({super.key});
+  const SearchScreen({super.key});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -34,6 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const SizedBox(),
         title: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
@@ -107,10 +108,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: CircularProgressIndicator(
                         color: ColorUtility.secondary));
               } else if (state is CourseSearchLoaded) {
-                return SizedBox(
-                  height: 100.h,
-                  child: _buildCourseList(state.courses, context),
-                );
+                return Expanded(
+                    child: _buildCourseList(state.courses, context));
               } else if (state is CourseSearchEmpty) {
                 return Center(child: textInApp(text: "No courses found."));
               } else if (state is CourseSearchError) {
@@ -137,10 +136,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: CircularProgressIndicator(
                         color: ColorUtility.secondary));
               } else if (state is BasedOnYourSearchLoaded) {
-                return SizedBox(
-                  height: 400.h,
-                  child: _buildCourseList(state.courses, context),
-                );
+                return Expanded(
+                    child: _buildCourseList(state.courses, context));
               } else if (state is BasedOnYourSearchEmpty) {
                 return Container();
               } else if (state is BasedOnYourSearchError) {

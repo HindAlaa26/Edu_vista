@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _startApp() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 6));
     if (mounted) {
       if (PreferencesService.isOnBoardingSeen) {
         if (FirebaseAuth.instance.currentUser != null) {
@@ -53,21 +53,27 @@ class _SplashScreenState extends State<SplashScreen> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomeLayoutScreen(),
+                  builder: (context) => const HomeLayoutScreen(),
                 ));
           } else {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
+                  builder: (context) => const LoginScreen(),
                 ));
           }
-        } else {}
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginScreen(),
+              ));
+        }
       } else {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => OnBoardingScreen(),
+              builder: (context) => const OnBoardingScreen(),
             ));
       }
     }

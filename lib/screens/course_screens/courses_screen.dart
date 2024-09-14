@@ -1,13 +1,12 @@
-import 'package:edu_vista/shared_component/default_text_component%20.dart';
 import 'package:edu_vista/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../bloc/course_bloc/course_bloc.dart';
 import '../../bloc/course_bloc/course_event.dart';
 import '../../bloc/course_bloc/course_state.dart';
 import '../../models/course_model.dart';
+import '../../shared_component/default_text.dart';
 import '../../shared_component/shopping_icon_widget.dart';
 import '../lecture_screen/lecture_screen.dart';
 
@@ -18,6 +17,7 @@ class CoursesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const SizedBox(),
         title: textInApp(text: "Courses"),
         actions: [shoppingIcon()],
       ),
